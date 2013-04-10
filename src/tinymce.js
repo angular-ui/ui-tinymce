@@ -1,8 +1,8 @@
 /**
  * Binds a TinyMCE widget to <textarea> elements.
  */
-angular.module('ui.directives').directive('uiTinymce', ['ui.config', function (uiConfig) {
-  uiConfig.tinymce = uiConfig.tinymce || {};
+angular.module('ui.tinymce', []).directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
+  uiTinymceConfig = uiTinymceConfig || {};
   return {
     require: 'ngModel',
     link: function (scope, elm, attrs, ngModel) {
@@ -44,7 +44,7 @@ angular.module('ui.directives').directive('uiTinymce', ['ui.config', function (u
       } else {
         expression = {};
       }
-      angular.extend(options, uiConfig.tinymce, expression);
+      angular.extend(options, uiTinymceConfig, expression);
       setTimeout(function () {
         elm.tinymce(options);
       });

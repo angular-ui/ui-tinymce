@@ -6,7 +6,7 @@ describe('uiTinymce', function () {
   beforeEach(module('ui'));
   beforeEach(function () {
     // throw some garbage in the tinymce cfg to be sure it's getting thru to the directive
-    angular.module('ui.config').value('ui.config', {tinymce: {bar: 'baz'}});
+    angular.module('ui.tinymce').value('uiTinymceConfig', {tinymce: {bar: 'baz'}});
   });
   beforeEach(inject(function (_$rootScope_, _$compile_) {
     scope = _$rootScope_.$new();
@@ -14,7 +14,7 @@ describe('uiTinymce', function () {
   }));
 
   afterEach(function () {
-    angular.module('ui.config').value('ui.config', {}); // cleanup
+    angular.module('ui.tinymce').value('uiTinymceConfig', {}); // cleanup
   });
 
   /**
