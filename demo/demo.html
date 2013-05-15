@@ -13,7 +13,9 @@
   <script type="text/javascript" src="src/tinymce.js"></script>
 </head>
 <body ng-app="ui.tinymce">
-  <textarea ui-tinymce ng-model="tinymce"></textarea>
+  <form method="post">
+    <textarea id="tinymce" ui-tinymce ng-model="tinymce"></textarea>
+  </form>
   <div>{{tinymce}}</div>
 </body>
 </html>
