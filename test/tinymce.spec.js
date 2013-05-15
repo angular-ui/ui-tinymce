@@ -3,7 +3,7 @@ describe('uiTinymce', function () {
   'use strict';
 
   var scope, $compile, element, text = '<p>Hello</p>';
-  beforeEach(module('ui'));
+  beforeEach(module('ui.tinymce'));
   beforeEach(function () {
     // throw some garbage in the tinymce cfg to be sure it's getting thru to the directive
     angular.module('ui.tinymce').value('uiTinymceConfig', {tinymce: {bar: 'baz'}});
