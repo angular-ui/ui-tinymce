@@ -22,7 +22,7 @@ describe('uiTinymce', function () {
    */
   function compile() {
     runs(function () {
-      element = $compile('<form><textarea name="foo" ui-tinymce="{foo: \'bar\'}" ng-model="foo"></textarea></form>')(scope);
+      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\'}" ng-model="foo"></textarea></form>')(scope);
     });
     waits(1);
   }
@@ -30,20 +30,20 @@ describe('uiTinymce', function () {
   describe('compiling this directive', function () {
 
     it('should include the passed options', function () {
-      spyOn($.fn, 'tinymce');
+      spyOn(tinymce, 'init');
       compile();
       runs(function () {
-        expect($.fn.tinymce).toHaveBeenCalled();
-        expect($.fn.tinymce.mostRecentCall.args[0].foo).toEqual('bar');
+        expect(tinymce.init).toHaveBeenCalled();
+        expect(tinymce.init.mostRecentCall.args[0].foo).toEqual('bar');
       });
     });
 
     it('should include the default options', function () {
-      spyOn($.fn, 'tinymce');
+      spyOn(tinymce, 'init');
       compile();
       runs(function () {
-        expect($.fn.tinymce).toHaveBeenCalled();
-        expect($.fn.tinymce.mostRecentCall.args[0].bar).toEqual('baz');
+        expect(tinymce.init).toHaveBeenCalled();
+        expect(tinymce.init.mostRecentCall.args[0].bar).toEqual('baz');
       });
     });
   });
