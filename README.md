@@ -1,4 +1,4 @@
-# ui-date directive [![Build Status](https://travis-ci.org/angular-ui/ui-tinymce.png)](https://travis-ci.org/angular-ui/ui-tinymce)
+# ui-tinymce directive [![Build Status](https://travis-ci.org/angular-ui/ui-tinymce.png)](https://travis-ci.org/angular-ui/ui-tinymce)
 
 This directive allows you to add a TinyMCE editor to your form elements.
 
@@ -36,7 +36,7 @@ This will copy the ui-tinymce files into your `components` folder, along with it
     <script type="text/javascript" src="components/angular/angular.js"></script>
     <script type="text/javascript" src="components/angular-ui-tinymce/tinymce.js"></script>
 
-Add the date module as a dependency to your application module:
+Add the tinymce module as a dependency to your application module:
 
     var myAppModule = angular.module('MyApp', ['ui.tinymce'])
 
@@ -64,11 +64,11 @@ All the TinyMCE options can be passed through the directive.
 
 ## Working with ng-model
 
-The ui-date directive plays nicely with the ng-model directive such as ng-required.
+The ui-tinymce directive plays nicely with the ng-model directive such as ng-required.
 
 If you add the ng-model directive to same the element as ui-tinymce then the text in the editor is automatically synchronized with the model value.
 
 _ng-model and the id are required_.
 
-_The ui-date directive stores and expects the model value to be a standard javascript Date object._
+_The ui-tinymce directive stores and expects the model value to be a standard javascript tinymce object._
 
