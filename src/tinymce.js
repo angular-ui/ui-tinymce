@@ -39,7 +39,9 @@ angular.module('ui.tinymce', [])
                     scope.$apply();
                 }
               });
-            }
+            },
+            mode: 'exact',
+            elements: attrs.id
           };
         if (attrs.uiTinymce) {
           expression = scope.$eval(attrs.uiTinymce);
@@ -48,7 +50,7 @@ angular.module('ui.tinymce', [])
         }
         angular.extend(options, uiTinymceConfig, expression);
         setTimeout(function () {
-          elm.tinymce(options);
+          tinymce.init(options);
         });
       }
     };
