@@ -15,8 +15,9 @@ angular.module('ui.tinymce', [])
               if (inst.isDirty()) {
                 inst.save();
                 ngModel.$setViewValue(elm.val());
-                if (!scope.$$phase)
+                if (!scope.$$phase) {
                   scope.$apply();
+                }
               }
             },
             // Update model on keypress
@@ -24,8 +25,9 @@ angular.module('ui.tinymce', [])
               if (this.isDirty()) {
                 this.save();
                 ngModel.$setViewValue(elm.val());
-                if (!scope.$$phase)
+                if (!scope.$$phase) {
                   scope.$apply();
+                }
               }
               return true; // Continue handling
             },
@@ -35,8 +37,9 @@ angular.module('ui.tinymce', [])
                 if (ed.isDirty()) {
                   ed.save();
                   ngModel.$setViewValue(elm.val());
-                  if (!scope.$$phase)
+                  if (!scope.$$phase) {
                     scope.$apply();
+                  }
                 }
               });
             },
