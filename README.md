@@ -1,98 +1,74 @@
-# ui-date directive [![Build Status](https://travis-ci.org/angular-ui/ui-tinymce.png)](https://travis-ci.org/angular-ui/ui-tinymce)
+# ui-tinymce directive [![Build Status](https://travis-ci.org/angular-ui/ui-tinymce.png)](https://travis-ci.org/angular-ui/ui-tinymce)
 
-This directive allows you to add a date-picker to your form elements.
+This directive allows you to add a TinyMCE editor to your form elements.
 
 # Requirements
 
 - AngularJS
-- JQuery
-- JQueryUI
-- [Date.toISOString()](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Date/toISOString) (requires [polyfill](https://github.com/kriskowal/es5-shim/) for &le;IE8)
+- TinyMCE 3
 
 # Testing
 
-We use testacular and jshint to ensure the quality of the code.  The easiest way to run these checks is to use grunt:
+We use karma and jshint to ensure the quality of the code.  The easiest way to run these checks is to use grunt:
 
   npm install -g grunt-cli
   npm install
   bower install
   grunt
 
-The testacular task will try to open Chrome as a browser in which to run the tests.  Make sure this is available or change the configuration in `test\test.config.js` 
+The karma task will try to open Chrome as a browser in which to run the tests.  Make sure this is available or change the configuration in `test\test.config.js` 
 
 # Usage
 
 We use [bower](http://twitter.github.com/bower/) for dependency management.  Add
 
     dependencies: {
-        "angular-ui-date": "latest"
+        "angular-ui-tinymce": "latest"
     }
 
 To your `components.json` file. Then run
 
     bower install
 
-This will copy the ui-date files into your `components` folder, along with its dependencies. Load the script files in your application:
+This will copy the ui-tinymce files into your `components` folder, along with its dependencies. Load the script files in your application:
 
-    <script type="text/javascript" src="components/jquery/jquery.js"></script>
-    <script type="text/javascript" src="components/jquery-ui\ui\jquery-ui.custom.js"></script>
+    <script type="text/javascript" src="components/tinymce/tinymce.js"></script>
     <script type="text/javascript" src="components/angular/angular.js"></script>
-    <script type="text/javascript" src="components/angular-ui-date/date.js"></script>
+    <script type="text/javascript" src="components/angular-ui-tinymce/tinymce.js"></script>
 
-Add the date module as a dependency to your application module:
+Add the tinymce module as a dependency to your application module:
 
-    var myAppModule = angular.module('MyApp', ['ui.date'])
+    var myAppModule = angular.module('MyApp', ['ui.tinymce'])
 
 Apply the directive to your form elements:
 
-    <input ui-date>
+    <form method="post">
+      <textarea id="tinymce" ui-tinymce ng-model="tinymceModel"></textarea>
+    </form>
 
 ## Options
 
-All the jQueryUI DatePicker options can be passed through the directive.
+All the TinyMCE options can be passed through the directive.
 
 	myAppModule.controller('MyController', function($scope) {
-		$scope.dateOptions = {
-			changeYear: true,
-			changeMonth: true,
-			yearRange: '1900:-0'
+		$scope.tinymceOptions = {
+			handle_event_callback: function (e) {
+        // put logic here for keypress
+      }
 		};
 	});
 
-    <input ui-date="dateOptions" name="DateOfBirth">
-
-## Static Inline Picker
-
-If you want a static picker then simply apply the directive to a div rather than an input element.
-
-    <div ui-date="dateOptions" name="DateOfBirth"></div>
+    <form method="post">
+      <textarea id="tinymce" ui-tinymce ng-model="tinymceModel"></textarea>
+    </form>
 
 ## Working with ng-model
 
-The ui-date directive plays nicely with ng-model and validation directives such as ng-required.
+The ui-tinymce directive plays nicely with the ng-model directive such as ng-required.
 
-If you add the ng-model directive to same the element as ui-date then the picked date is automatically synchronized with the model value.
+If you add the ng-model directive to same the element as ui-tinymce then the text in the editor is automatically synchronized with the model value.
 
-_The ui-date directive stores and expects the model value to be a standard javascript Date object._
+_ng-model and the id are required_.
 
-## ui-date-format directive
-The ui-date directive only works with Date objects.
-If you want to pass date strings to and from the date directive via ng-model then you must use the ui-date-format directive.
-This directive specifies the format of the date string that will be expected in the ng-model.
-The format string syntax is that defined by the JQueryUI Date picker. For example
-
-    <input ui-date ui-date-format="DD, d MM, yy" ng-model="myDate">
-
-Now you can set myDate in the controller.
-
-    $scope.myDate = "Thursday, 11 October, 2012";
-
-## ng-required directive
-
-If you apply the required directive to element then the form element is invalid until a date is picked.
-
-Note: Remember that the ng-required directive must be explictly set, i.e. to "true".  This is especially true on divs:
-
-    <div ui-date="dateOptions" name="DateOfBirth" ng-required="true"></div>
-
+_The ui-tinymce directive stores and expects the model value to be a standard javascript tinymce object._
 
