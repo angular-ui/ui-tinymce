@@ -68,7 +68,5 @@ The ui-tinymce directive plays nicely with the ng-model directive such as ng-req
 
 If you add the ng-model directive to same the element as ui-tinymce then the text in the editor is automatically synchronized with the model value.
 
-_ng-model_.
-
 _The ui-tinymce directive stores and expects the model value to be a standard javascript tinymce object._
 
