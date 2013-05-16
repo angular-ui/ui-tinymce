@@ -26,7 +26,7 @@ We use [bower](http://twitter.github.com/bower/) for dependency management.  Add
         "angular-ui-tinymce": "latest"
     }
 
-To your `components.json` file. Then run
+To your `bower.json` file. Then run
 
     bower install
 
@@ -43,7 +43,7 @@ Add the tinymce module as a dependency to your application module:
 Apply the directive to your form elements:
 
     <form method="post">
-      <textarea id="tinymce" ui-tinymce ng-model="tinymceModel"></textarea>
+      <textarea ui-tinymce ng-model="tinymceModel"></textarea>
     </form>
 
 ## Options
@@ -59,7 +59,7 @@ All the TinyMCE options can be passed through the directive.
 	});
 
     <form method="post">
-      <textarea id="tinymce" ui-tinymce ng-model="tinymceModel"></textarea>
+      <textarea ui-tinymce ng-model="tinymceModel"></textarea>
     </form>
 
 ## Working with ng-model
@@ -68,7 +68,7 @@ The ui-tinymce directive plays nicely with the ng-model directive such as ng-req
 
 If you add the ng-model directive to same the element as ui-tinymce then the text in the editor is automatically synchronized with the model value.
 
-_ng-model and the id are required_.
+_ng-model_.
 
 _The ui-tinymce directive stores and expects the model value to be a standard javascript tinymce object._
 
