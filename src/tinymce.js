@@ -60,12 +60,18 @@ angular.module('ui.tinymce', [])
         setTimeout(function () {
           tinymce.init(options);
         });
-        ngModel.$render = function(){
-          if (!tinyInstance) {
-            tinyInstance = tinymce.get(attrs.id);
+        
+        var interval = setInterval(function (){
+          tinyInstance = tinymce.get(attrs.id);
+
+          if (tinyInstance) {
+            clearInterval(interval);
+
+            ngModel.$render = function() {
+              tinyInstance.setContent(ngModel.$viewValue || '');
+            };
           }
-          tinyInstance.setContent(ngModel.$viewValue);
-        };
+        }, 0);
       }
     };
   }]);
