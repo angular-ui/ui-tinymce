@@ -43,7 +43,7 @@ describe('uiTinymce', function () {
       compile();
       runs(function () {
         expect(tinymce.init).toHaveBeenCalled();
-        expect(tinymce.init.mostRecentCall.args[0].bar).toEqual('baz');
+        expect(tinymce.init.mostRecentCall.args[0].tinymce.bar).toEqual('baz');
       });
     });
   });
