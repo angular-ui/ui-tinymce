@@ -59,7 +59,7 @@ All the TinyMCE options can be passed through the directive.
 	});
 
     <form method="post">
-      <textarea ui-tinymce ng-model="tinymceModel"></textarea>
+      <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
     </form>
 
 ## Working with ng-model
