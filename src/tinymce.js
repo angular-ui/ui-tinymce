@@ -3,7 +3,8 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
+  .value('uiTinymceSetup', function (ed) {})
+  .directive('uiTinymce', ['uiTinymceConfig', 'uiTinymceSetup', function (uiTinymceConfig, uiTinymceSetup) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
@@ -50,6 +51,9 @@ angular.module('ui.tinymce', [])
                 }
               }
             });
+            if (uiTinymceSetup) {
+              uiTinymceSetup(ed);
+            }
           },
           mode: 'exact',
           elements: attrs.id
