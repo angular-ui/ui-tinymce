@@ -38,10 +38,10 @@ angular.module('ui.tinymce', [])
           },
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
-            ed.onInit.add(function(ed) {
+            ed.on('init', function(args) {
               ngModel.$render();
             });
-            ed.onSetContent.add(function (ed, o) {
+            ed.on('change', function (e) {
               if (ed.isDirty()) {
                 ed.save();
                 ngModel.$setViewValue(elm.val());
@@ -63,7 +63,7 @@ angular.module('ui.tinymce', [])
         setTimeout(function () {
           tinymce.init(options);
         });
-        
+
 
         ngModel.$render = function() {
           if (!tinyInstance) {
