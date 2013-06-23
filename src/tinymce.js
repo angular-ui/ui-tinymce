@@ -15,39 +15,26 @@ angular.module('ui.tinymce', [])
           attrs.$set('id', 'uiTinymce' + generatedIds++);
         }
         options = {
-          // Update model on button click
-          onchange_callback: function (inst) {
-            if (inst.isDirty()) {
-              inst.save();
-              ngModel.$setViewValue(elm.val());
-              if (!scope.$$phase) {
-                scope.$apply();
-              }
-            }
-          },
-          // Update model on keypress
-          handle_event_callback: function (e) {
-            if (this.isDirty()) {
-              this.save();
-              ngModel.$setViewValue(elm.val());
-              if (!scope.$$phase) {
-                scope.$apply();
-              }
-            }
-            return true; // Continue handling
-          },
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
-            ed.onInit.add(function(ed) {
+            ed.on('init', function(args) {
               ngModel.$render();
             });
-            ed.onSetContent.add(function (ed, o) {
-              if (ed.isDirty()) {
-                ed.save();
-                ngModel.$setViewValue(elm.val());
-                if (!scope.$$phase) {
-                  scope.$apply();
-                }
+            // Update model on button click
+            ed.on('ExecCommand', function (e) {
+              ed.save();
+              ngModel.$setViewValue(elm.val());
+              if (!scope.$$phase) {
+                scope.$apply();
+              }
+            });
+            // Update model on keypress
+            ed.on('KeyUp', function (e) {
+              console.log(ed.isDirty());
+              ed.save();
+              ngModel.$setViewValue(elm.val());
+              if (!scope.$$phase) {
+                scope.$apply();
               }
             });
           },
@@ -63,7 +50,7 @@ angular.module('ui.tinymce', [])
         setTimeout(function () {
           tinymce.init(options);
         });
-        
+
 
         ngModel.$render = function() {
           if (!tinyInstance) {
