@@ -5,7 +5,7 @@ This directive allows you to add a TinyMCE editor to your form elements.
 # Requirements
 
 - AngularJS
-- TinyMCE 3
+- TinyMCE 4
 
 # Testing
 
