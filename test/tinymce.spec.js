@@ -22,8 +22,9 @@ describe('uiTinymce', function () {
    */
   function compile() {
     runs(function () {
-      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\'}" ng-model="foo"></textarea></form>')(scope);
+      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar }" ng-model="foo"></textarea></form>')(scope);
     });
+    scope.$apply();
     waits(1);
   }
 
@@ -44,6 +45,14 @@ describe('uiTinymce', function () {
       runs(function () {
         expect(tinymce.init).toHaveBeenCalled();
         expect(tinymce.init.mostRecentCall.args[0].tinymce.bar).toEqual('baz');
+      });
+    });
+    
+    it('should execute the passed `setup` option', function () {
+      scope.setupFooBar = jasmine.createSpy('setupFooBar');
+      compile();
+      runs(function () {
+        expect(scope.setupFooBar).toHaveBeenCalled();
       });
     });
   });
