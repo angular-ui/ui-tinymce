@@ -63,7 +63,6 @@ angular.module('ui.tinymce', [])
         setTimeout(function () {
           tinymce.init(options);
         });
-        
 
         ngModel.$render = function() {
           if (!tinyInstance) {
@@ -71,6 +70,16 @@ angular.module('ui.tinymce', [])
           }
           if (tinyInstance) {
             tinyInstance.setContent(ngModel.$viewValue || '');
+          }
+
+          if (tinyInstance) {
+            var contentAreaContainer = angular.element(tinyInstance.contentAreaContainer);
+
+            contentAreaContainer.find('iframe')[0].contentWindow.document.body.onclick = function () {
+              var event = document.createEvent('MouseEvent');
+              event.initEvent('click', true, true);
+              contentAreaContainer[0].dispatchEvent(event);
+            };
           }
         };
       }
