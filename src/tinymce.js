@@ -70,9 +70,7 @@ angular.module('ui.tinymce', [])
           }
           if (tinyInstance) {
             tinyInstance.setContent(ngModel.$viewValue || '');
-          }
 
-          if (tinyInstance) {
             var contentAreaContainer = angular.element(tinyInstance.contentAreaContainer);
 
             contentAreaContainer.find('iframe')[0].contentWindow.document.body.onclick = function () {
