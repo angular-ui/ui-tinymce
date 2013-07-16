@@ -76,7 +76,7 @@ angular.module('ui.tinymce', [])
             contentAreaContainer.find('iframe')[0].contentWindow.document.body.onclick = function () {
               var event = document.createEvent('MouseEvent');
               event.initEvent('click', true, true);
-              contentAreaContainer[0].dispatchEvent(event);
+              elm[0].dispatchEvent(event);
             };
           }
         };
