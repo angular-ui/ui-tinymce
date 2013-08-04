@@ -44,14 +44,14 @@ angular.module('ui.tinymce', [])
               }
             });
             if (expression.setup) {
-              // Just in case TinyMCE adds more arguments in the future or `this` context is needed...
-              args = Array.prototype.slice.call(arguments);
-              expression.setup.apply(this, args);
+              scope.$eval(expression.setup);
+              delete expression.setup;
             }
           },
           mode: 'exact',
           elements: attrs.id
         };
+        // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
         setTimeout(function () {
           tinymce.init(options);

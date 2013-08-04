@@ -22,7 +22,7 @@ describe('uiTinymce', function () {
    */
   function compile() {
     runs(function () {
-      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar }" ng-model="foo"></textarea></form>')(scope);
+      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
     });
     scope.$apply();
     waits(1);
