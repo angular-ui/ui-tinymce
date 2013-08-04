@@ -14,7 +14,8 @@ describe('uiTinymce', function () {
   }));
 
   afterEach(function () {
-    angular.module('ui.tinymce').value('uiTinymceConfig', {}); // cleanup
+    angular.module('ui.tinymce').value('uiTinymceConfig', {});
+    element.remove();
   });
 
   /**
@@ -23,6 +24,7 @@ describe('uiTinymce', function () {
   function compile() {
     runs(function () {
       element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
+      angular.element(document.getElementsByTagName('body')[0]).append(element);
     });
     scope.$apply();
     waits(1);
@@ -47,7 +49,7 @@ describe('uiTinymce', function () {
         expect(tinymce.init.mostRecentCall.args[0].tinymce.bar).toEqual('baz');
       });
     });
-    
+
     it('should execute the passed `setup` option', function () {
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
       compile();
@@ -64,7 +66,7 @@ describe('uiTinymce', function () {
         scope.$apply(function() {
           scope.foo = text;
         });
-        expect(element.find('textarea').tinymce().getContent()).toEqual(text);
+        expect(tinymce.get('foo').getContent()).toEqual(text);
       });
     });
     it('should handle undefined gracefully', function() {
@@ -73,7 +75,7 @@ describe('uiTinymce', function () {
         scope.$apply(function() {
           scope.foo = undefined;
         });
-        expect(element.find('textarea').tinymce().getContent()).toEqual('');
+        expect(tinymce.get('foo').getContent()).toEqual('');
       });
     });
     it('should handle null gracefully', function() {
@@ -82,7 +84,7 @@ describe('uiTinymce', function () {
         scope.$apply(function() {
           scope.foo = null;
         });
-        expect(element.find('textarea').tinymce().getContent()).toEqual('');
+        expect(tinymce.get('foo').getContent()).toEqual('');
       });
     });
   });
@@ -90,10 +92,10 @@ describe('uiTinymce', function () {
     it('should update the model', function() {
       compile();
       runs(function () {
-        element.find('textarea').tinymce().setContent(text);
-        expect($rootScope.x).toEqual(text);
+        tinymce.get('foo').setContent(text);
+        expect(scope.foo).toEqual(text);
       });
     });
   });
-   */
+  */
 });
