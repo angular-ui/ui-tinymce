@@ -9,12 +9,18 @@ angular.module('ui.tinymce', [])
     return {
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance;
+        var expression, options, tinyInstance,
+          updateView = function () {
+            ngModel.$setViewValue(elm.val());
+            if (!scope.$$phase) {
+              scope.$apply();
+            }
+          };
         // generate an ID if not present
         if (!attrs.id) {
           attrs.$set('id', 'uiTinymce' + generatedIds++);
         }
-        
+
         if (attrs.uiTinymce) {
           expression = scope.$eval(attrs.uiTinymce);
         } else {
@@ -30,18 +36,17 @@ angular.module('ui.tinymce', [])
             // Update model on button click
             ed.on('ExecCommand', function (e) {
               ed.save();
-              ngModel.$setViewValue(elm.val());
-              if (!scope.$$phase) {
-                scope.$apply();
-              }
+              updateView();
             });
             // Update model on keypress
             ed.on('KeyUp', function (e) {
               ed.save();
-              ngModel.$setViewValue(elm.val());
-              if (!scope.$$phase) {
-                scope.$apply();
-              }
+              updateView();
+            });
+            // Update model on change, i.e. copy/pasted text, plugins altering content
+            ed.on('SetContent', function (e) {
+              ed.save();
+              updateView();
             });
             if (expression.setup) {
               scope.$eval(expression.setup);
