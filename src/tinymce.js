@@ -45,8 +45,10 @@ angular.module('ui.tinymce', [])
             });
             // Update model on change, i.e. copy/pasted text, plugins altering content
             ed.on('SetContent', function (e) {
-              ed.save();
-              updateView();
+              if(!e.initial){
+                ed.save();
+                updateView();
+              }
             });
             if (expression.setup) {
               scope.$eval(expression.setup);
