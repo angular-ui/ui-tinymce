@@ -51,9 +51,12 @@ describe('uiTinymce', function () {
     });
 
     it('should execute the passed `setup` option', function () {
+      spyOn(tinymce, 'init').andCallThrough();
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
       compile();
       runs(function () {
+        // check that the provided setup function did not override the internal one
+        expect(tinymce.init.calls[0].args[0].setup.toString()).toMatch(/function \(ed\)/);
         expect(scope.setupFooBar).toHaveBeenCalled();
       });
     });

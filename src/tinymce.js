@@ -9,7 +9,7 @@ angular.module('ui.tinymce', [])
     return {
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance,
+        var expression, options, tinyInstance, userSetup,
           updateView = function () {
             ngModel.$setViewValue(elm.val());
             if (!scope.$$phase) {
@@ -26,6 +26,7 @@ angular.module('ui.tinymce', [])
         } else {
           expression = {};
         }
+        userSetup = delete expression.setup;
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
@@ -50,9 +51,8 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
-            if (expression.setup) {
-              scope.$eval(expression.setup);
-              delete expression.setup;
+            if (userSetup) {
+              scope.$eval(userSetup);
             }
           },
           mode: 'exact',
