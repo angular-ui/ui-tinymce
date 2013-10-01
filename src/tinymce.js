@@ -54,6 +54,11 @@ angular.module('ui.tinymce', [])
               scope.$eval(expression.setup);
               delete expression.setup;
             }
+            scope.$on('$destroy', function() {
+                /* make sure we destroy instances when we move out of scope. */
+                tinymce.EditorManager.remove("#" + ed.id);
+            });
+
           },
           mode: 'exact',
           elements: attrs.id
