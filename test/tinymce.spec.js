@@ -23,7 +23,7 @@ describe('uiTinymce', function () {
    */
   function compile() {
     runs(function () {
-      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
+      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar }" ng-model="foo"></textarea></form>')(scope);
       angular.element(document.getElementsByTagName('body')[0]).append(element);
     });
     scope.$apply();
@@ -40,7 +40,7 @@ describe('uiTinymce', function () {
         expect(tinymce.init.mostRecentCall.args[0].foo).toEqual('bar');
       });
     });
-
+    
     it('should include the default options', function () {
       spyOn(tinymce, 'init');
       compile();

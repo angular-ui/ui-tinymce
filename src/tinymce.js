@@ -26,7 +26,11 @@ angular.module('ui.tinymce', [])
         } else {
           expression = {};
         }
-        userSetup = delete expression.setup;
+        
+        if (expression.setup) {
+          userSetup = expression.setup;
+          delete expression.setup;
+        }
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
@@ -52,7 +56,7 @@ angular.module('ui.tinymce', [])
               }
             });
             if (userSetup) {
-              scope.$eval(userSetup);
+              userSetup.apply(scope, [ed]);
             }
           },
           mode: 'exact',
