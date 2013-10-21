@@ -50,6 +50,12 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            ed.on('blur', function(e) {
+                elm.blur();
+                if (!scope.$$phase) { /* unsure if this is needed. */
+                    scope.$apply();
+                }
+            });
             if (expression.setup) {
               scope.$eval(expression.setup);
               delete expression.setup;
