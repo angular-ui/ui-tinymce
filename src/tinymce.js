@@ -53,6 +53,9 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            ed.on('blur', function(e) {
+                elm.blur();
+            });
             if (expression.setup) {
               scope.$eval(expression.setup);
               delete expression.setup;
