@@ -29,6 +29,12 @@ angular.module('ui.tinymce', [])
           expression = {};
         }
 
+        // make config'ed setup method available
+        if (expression.setup) {
+          var configSetup = expression.setup;
+          delete expression.setup;
+        }
+
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
@@ -56,9 +62,8 @@ angular.module('ui.tinymce', [])
             ed.on('blur', function(e) {
                 elm.blur();
             });
-            if (expression.setup) {
-              scope.$eval(expression.setup);
-              delete expression.setup;
+            if (configSetup) {
+              configSetup(ed);
             }
           },
           mode: 'exact',
