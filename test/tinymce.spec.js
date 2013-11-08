@@ -58,6 +58,15 @@ describe('uiTinymce', function () {
       });
     });
   });
+
+  it('should remove tinymce instance on $scope destruction', function () {
+    compile();
+    runs(function () {
+      expect(tinymce.get('foo')).toBeTruthy();
+      scope.$destroy();
+      expect(tinymce.get('foo')).toBeUndefined();
+    });
+  });
   /*
   describe('setting a value to the model', function () {
     it('should update the editor', function() {
