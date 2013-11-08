@@ -16,6 +16,7 @@ angular.module('ui.tinymce', [])
               scope.$apply();
             }
           };
+
         // generate an ID if not present
         if (!attrs.id) {
           attrs.$set('id', 'uiTinymce' + generatedIds++);
@@ -26,6 +27,7 @@ angular.module('ui.tinymce', [])
         } else {
           expression = {};
         }
+
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
@@ -64,7 +66,6 @@ angular.module('ui.tinymce', [])
           tinymce.init(options);
         });
 
-
         ngModel.$render = function() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
@@ -73,6 +74,14 @@ angular.module('ui.tinymce', [])
             tinyInstance.setContent(ngModel.$viewValue || '');
           }
         };
+
+        scope.$on('$destroy', function() {
+          if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
+          if (tinyInstance) {
+            tinyInstance.remove();
+            tinyInstance = null;
+          }
+        });
       }
     };
   }]);
