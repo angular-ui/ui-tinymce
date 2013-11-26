@@ -58,7 +58,6 @@ angular.module('ui.tinymce', [])
           });
           if (expression.setup) {
             expression.setup(ed);
-            delete expression.setup;
           }
         };
         setTimeout(function () {
