@@ -8,6 +8,7 @@ angular.module('ui.tinymce', [])
     var generatedIds = 0;
     return {
       require: 'ngModel',
+      priority: 1,
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
           updateView = function () {
