@@ -2,6 +2,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-conventional-changelog');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'karma']);
@@ -32,6 +33,11 @@ module.exports = function (grunt) {
         boss:true,
         eqnull:true,
         globals:{}
+      }
+    },
+    changelog: {
+      options: {
+        dest: 'CHANGELOG.md'
       }
     }
   });
