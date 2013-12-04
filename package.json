@@ -10,7 +10,8 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-karma": "~0.4.4",
-    "grunt-contrib-jshint": "~0.2.0"
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-conventional-changelog": "~1.0.0"
   },
   "scripts": {},
   "repository": {
