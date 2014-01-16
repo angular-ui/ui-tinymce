@@ -51,16 +51,16 @@ Apply the directive to your form elements:
 All the TinyMCE options can be passed through the directive.
 
 	myAppModule.controller('MyController', function($scope) {
-		$scope.tinymceOptions = {
-			handle_event_callback: function (e) {
-        // put logic here for keypress
-      }
-		};
+	  $scope.tinymceOptions = {
+	    onChange: function (e) {
+	      // put logic here for keypress and cut/paste changes
+	    }
+	  };
 	});
 
-    <form method="post">
-      <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
-    </form>
+	<form method="post">
+	  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
+	</form>
 
 ## Working with ng-model
 
