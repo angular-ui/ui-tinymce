@@ -65,14 +65,14 @@ angular.module('ui.tinymce', [])
         });
 
         var stopWatch = scope.$watch(attrs.ngModel, function(newValue) {
-        	
-		    tinyInstance = tinymce.get(attrs.id);
+            
+            tinyInstance = tinymce.get(attrs.id);
 
-		    if(tinyInstance){
-		        tinyInstance.setContent(newValue);
-		        stopWatch();
-		    }
-		});
+            if(tinyInstance){
+                tinyInstance.setContent(newValue);
+                stopWatch();
+            }
+        });
 
         
         ngModel.$render = function() {
