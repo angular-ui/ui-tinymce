@@ -7,7 +7,6 @@ angular.module('ui.tinymce', [])
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
-      priority: 1,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
