@@ -7,6 +7,7 @@ angular.module('ui.tinymce', [])
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
+      priority: 1,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
@@ -64,7 +65,17 @@ angular.module('ui.tinymce', [])
           tinymce.init(options);
         });
 
+        var stopWatch = scope.$watch(attrs.ngModel, function(newValue) {
+        	
+		    tinyInstance = tinymce.get(attrs.id);
 
+		    if(tinyInstance){
+		        tinyInstance.setContent(newValue);
+		        stopWatch();
+		    }
+		});
+
+        
         ngModel.$render = function() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
