@@ -50,6 +50,11 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            // Update model when an object has been resized (table, image)
+            ed.on('ObjectResized', function (e) {
+              ed.save();
+              updateView();
+            });
             if (expression.setup) {
               scope.$eval(expression.setup);
               delete expression.setup;
