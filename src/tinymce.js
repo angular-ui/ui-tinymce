@@ -62,6 +62,11 @@ angular.module('ui.tinymce', [])
             ed.on('blur', function(e) {
                 elm.blur();
             });
+            // Update model when an object has been resized (table, image)
+            ed.on('ObjectResized', function (e) {
+              ed.save();
+              updateView();
+            });
             if (configSetup) {
               configSetup(ed);
             }
