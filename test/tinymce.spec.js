@@ -71,44 +71,53 @@ describe('uiTinymce', function () {
       done();
     });
   });
-  /*
+
   describe('setting a value to the model', function () {
-    it('should update the editor', function() {
+    it('should update the editor', function(done) {
       compile();
-      runs(function () {
-        scope.$apply(function() {
-          scope.foo = text;
-        });
+      setTimeout(function () {
+        scope.foo = text;
+        scope.$apply();
+
         expect(tinymce.get('foo').getContent()).toEqual(text);
+
+        done();
       });
     });
-    it('should handle undefined gracefully', function() {
+    it('should handle undefined gracefully', function (done) {
       compile();
-      runs(function () {
-        scope.$apply(function() {
-          scope.foo = undefined;
-        });
+      setTimeout(function () {
+        scope.foo = undefined;
+        scope.$apply();
+
         expect(tinymce.get('foo').getContent()).toEqual('');
+
+        done();
       });
     });
-    it('should handle null gracefully', function() {
+    it('should handle null gracefully', function (done) {
       compile();
-      runs(function () {
-        scope.$apply(function() {
-          scope.foo = null;
-        });
+      setTimeout(function () {
+        scope.foo = null;
+        scope.$apply();
+
         expect(tinymce.get('foo').getContent()).toEqual('');
+
+        done();
       });
     });
   });
-  describe('using the editor', function () {
-    it('should update the model', function() {
+  /*describe('using the editor', function () {
+    it('should update the model', function (done) {
       compile();
-      runs(function () {
+      setTimeout(function () {
         tinymce.get('foo').setContent(text);
+
         expect(scope.foo).toEqual(text);
+
+        done();
       });
     });
-  });
-  */
+  });*/
+
 });
