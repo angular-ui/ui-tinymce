@@ -53,10 +53,21 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            ed.on('blur', function(e) {
+                elm.blur();
+                if (!scope.$$phase) { /* unsure if this is needed. */
+                    scope.$apply();
+                }
+            });
             if (expression.setup) {
               scope.$eval(expression.setup);
               delete expression.setup;
             }
+            scope.$on('$destroy', function() {
+                /* make sure we destroy instances when we move out of scope. */
+                tinymce.EditorManager.remove("#" + ed.id);
+            });
+
           },
           mode: 'exact',
           elements: attrs.id
