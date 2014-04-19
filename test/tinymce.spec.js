@@ -22,49 +22,53 @@ describe('uiTinymce', function () {
    * Asynchronously runs the compilation.
    */
   function compile() {
-    runs(function () {
-      element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
-      angular.element(document.getElementsByTagName('body')[0]).append(element);
-    });
+    element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
+    angular.element(document.getElementsByTagName('body')[0]).append(element);
     scope.$apply();
-    waits(1);
   }
 
   describe('compiling this directive', function () {
 
-    it('should include the passed options', function () {
+    it('should include the passed options', function (done) {
       spyOn(tinymce, 'init');
       compile();
-      runs(function () {
+      setTimeout(function () {
         expect(tinymce.init).toHaveBeenCalled();
-        expect(tinymce.init.mostRecentCall.args[0].foo).toEqual('bar');
+        expect(tinymce.init.calls.mostRecent().args[0].foo).toBe('bar');
+        done();
       });
     });
 
-    it('should include the default options', function () {
+    it('should include the default options', function (done) {
       spyOn(tinymce, 'init');
       compile();
-      runs(function () {
+      setTimeout(function () {
         expect(tinymce.init).toHaveBeenCalled();
-        expect(tinymce.init.mostRecentCall.args[0].tinymce.bar).toEqual('baz');
+        expect(tinymce.init.calls.mostRecent().args[0].tinymce.bar).toBe('baz');
+        done();
       });
     });
 
-    it('should execute the passed `setup` option', function () {
+    it('should execute the passed `setup` option', function (done) {
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
       compile();
-      runs(function () {
+      setTimeout(function () {
         expect(scope.setupFooBar).toHaveBeenCalled();
+        done();
       });
     });
   });
 
-  it('should remove tinymce instance on $scope destruction', function () {
+  it('should remove tinymce instance on $scope destruction', function (done) {
     compile();
-    runs(function () {
+    setTimeout(function () {
       expect(tinymce.get('foo')).toBeTruthy();
+
       scope.$destroy();
+
       expect(tinymce.get('foo')).toBeUndefined();
+
+      done();
     });
   });
   /*

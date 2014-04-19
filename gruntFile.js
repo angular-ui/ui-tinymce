@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['jshint', 'karma']);
 
   var karmaConfig = function(configFile, customOptions) {
-    var options = { configFile: configFile, keepalive: true };
+    var options = { configFile: configFile, singleRun: true };
     var travisOptions = process.env.TRAVIS && { browsers: ['Firefox'], reporters: 'dots' };
     return grunt.util._.extend(options, customOptions, travisOptions);
   };
@@ -15,9 +15,7 @@ module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     karma: {
-      unit: {
-        options: karmaConfig('test/test.conf.js')
-      }
+      unit: karmaConfig('test/karma.conf.js')
     },
     jshint:{
       files:['src/**/*.js', 'test/**/*.js', 'demo/**/*.js'],
