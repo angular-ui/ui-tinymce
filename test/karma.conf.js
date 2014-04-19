@@ -7,8 +7,10 @@ module.exports = function (config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/tinymce/tinymce.min.js',
       'src/tinymce.js',
+      'test/*.spec.js',
       {pattern: 'bower_components/tinymce/themes/modern/theme.min.js', served: true},
-      'test/*.spec.js'
+      {pattern: 'bower_components/tinymce/skins/lightgray/content.min.css', served: true},
+      {pattern: 'bower_components/tinymce/skins/lightgray/skin.min.css', served: true}
     ],
     singleRun: false,
     autoWatch: true,
