@@ -62,7 +62,7 @@ describe('uiTinymce', function () {
   it('should remove tinymce instance on $scope destruction', function (done) {
     compile();
     setTimeout(function () {
-      expect(tinymce.get('foo')).toBeTruthy();
+      expect(tinymce.get('foo')).toBeDefined();
 
       scope.$destroy();
 

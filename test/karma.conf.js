@@ -9,8 +9,7 @@ module.exports = function (config) {
       'src/tinymce.js',
       'test/*.spec.js',
       {pattern: 'bower_components/tinymce/themes/modern/theme.min.js', served: true},
-      {pattern: 'bower_components/tinymce/skins/lightgray/content.min.css', served: true},
-      {pattern: 'bower_components/tinymce/skins/lightgray/skin.min.css', served: true}
+      {pattern: 'bower_components/tinymce/skins/lightgray/*', served: true}
     ],
     singleRun: false,
     autoWatch: true,

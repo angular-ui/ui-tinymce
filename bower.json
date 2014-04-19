@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "angular": "~1.x",
-    "tinymce": "git://github.com/jozzhart/tinymce.git#4.0.0"
+    "tinymce": "git@github.com:spekkionu/tinymce.git#4.0.16"
   },
   "devDependencies": {
     "angular-mocks": "~1.x"
