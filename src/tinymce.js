@@ -41,6 +41,7 @@ angular.module('ui.tinymce', [])
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
+              ngModel.$setPristine();
             });
             // Update model on button click
             ed.on('ExecCommand', function (e) {
