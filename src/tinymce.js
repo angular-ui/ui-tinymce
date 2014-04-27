@@ -60,6 +60,10 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            ed.on('ObjectResized', function (e) {
+              ed.save();
+              updateView();
+            });
             ed.on('blur', function(e) {
                 elm.blur();
             });
