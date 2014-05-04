@@ -61,7 +61,9 @@ angular.module('ui.tinymce', [])
               }
             });
             ed.on('blur', function(e) {
-                elm.blur();
+              if (!options.inline) {
+                elm.triggerHandler("blur");
+              }
             });
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function (e) {
