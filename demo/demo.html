@@ -10,11 +10,41 @@
   <script type="text/javascript" src="../bower_components/tinymce/tinymce.min.js"></script>
   <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
   <script type="text/javascript" src="../src/tinymce.js"></script>
+  <script>
+  angular.module('ui.tinymce')
+    .controller('SimpleExampleCtrl', function($scope) {
+      $scope.setDefaultText = function() {
+        $scope.tinymceModel = '<h3>Hello World!</h3>'
+      }
+      $scope.setDefaultText()
+    })
+    .controller('InlineExampleCtrl', function($scope) {
+      $scope.setDefaultText = function() {
+        $scope.tinymceModel = 'Click on me to open tinymce editor!'
+      }
+      $scope.options = {
+        inline: true
+      }
+      $scope.setDefaultText()
+    })
+  </script>
 </head>
 <body ng-app="ui.tinymce">
-  <form method="post">
-    <textarea id="tinymce" ui-tinymce ng-model="tinymce"></textarea>
-  </form>
-  <div>{{tinymce}}</div>
+  <div ng-controller="SimpleExampleCtrl">
+    <h1>Simple use:</h1>
+    <button ng-click="setDefaultText()">Set model from controller</button>
+    <form name="form1">
+      <textarea id="tinymce-simple-example" name="tinymceModel" ui-tinymce ng-model="tinymceModel"></textarea>
+    </form>
+    <div>{{tinymceModel}}</div>
+  </div>
+  <div ng-controller="InlineExampleCtrl" style="margin-top: 50px">
+    <h1>Inline:</h1>
+    <button ng-click="setDefaultText()">Set model from controller</button>
+    <form style="margin-top: 100px" name="form2">
+      <div id="tinymceModel" ui-tinymce="options" ng-model="tinymceModel"></div>
+    </form>
+    <div>{{tinymceModel}}</div>
+  </div>
 </body>
 </html>
