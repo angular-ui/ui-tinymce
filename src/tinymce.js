@@ -87,6 +87,14 @@ angular.module('ui.tinymce', [])
           }
           if (tinyInstance) {
             tinyInstance.setContent(ngModel.$viewValue || '');
+
+            var contentAreaContainer = angular.element(tinyInstance.contentAreaContainer);
+
+            contentAreaContainer.find('iframe')[0].contentWindow.document.body.onclick = function () {
+              var event = document.createEvent('MouseEvent');
+              event.initEvent('click', true, true);
+              elm[0].dispatchEvent(event);
+            };
           }
         };
 
