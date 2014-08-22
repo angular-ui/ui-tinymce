@@ -60,6 +60,13 @@ angular.module('ui.tinymce', [])
                 updateView();
               }
             });
+            // Update model on nodeChange. Used for plugins lik textcolor
+            ed.on('NodeChange', function(e) {
+              if (!e.initial && ngModel.$viewValue !== e.content) {
+                ed.save();
+                updateView();
+              }
+            });            
             ed.on('blur', function(e) {
                 elm.blur();
             });
