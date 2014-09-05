@@ -6,6 +6,8 @@ angular.module('ui.tinymce', [])
   .directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
+    var editor;
+
     return {
       priority: 10,
       require: 'ngModel',
@@ -38,6 +40,8 @@ angular.module('ui.tinymce', [])
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
+            editor = ed;
+            
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
