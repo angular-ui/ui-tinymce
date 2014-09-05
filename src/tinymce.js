@@ -12,7 +12,7 @@ angular.module('ui.tinymce', [])
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
           updateView = function () {
-            ngModel.$setViewValue(elm.val());
+            ngModel.$setViewValue(editor.getContent({ format : 'raw' }));
             if (!scope.$root.$$phase) {
               scope.$apply();
             }
