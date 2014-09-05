@@ -6,13 +6,12 @@ angular.module('ui.tinymce', [])
   .directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
-    var editor;
 
     return {
       priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance,
+        var editor, expression, options, tinyInstance,
           updateView = function () {
             ngModel.$setViewValue(editor.getContent({ format : 'raw' }));
             if (!scope.$root.$$phase) {
