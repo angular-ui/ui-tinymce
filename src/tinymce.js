@@ -37,12 +37,6 @@ angular.module('ui.tinymce', [])
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
-        // make config'ed setup method available
-        if (expression.setup) {
-          var configSetup = expression.setup;
-          delete expression.setup;
-        }
-
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function(ed) {
@@ -70,8 +64,8 @@ angular.module('ui.tinymce', [])
               ed.save();
               updateView(ed);
             });
-            if (configSetup) {
-              configSetup(ed, {
+            if (expression.setup) {
+              expression.setup(ed, {
                 updateView: updateView
               });
             }
