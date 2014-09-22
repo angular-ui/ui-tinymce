@@ -28,16 +28,17 @@ angular.module('ui.tinymce', [])
         } else {
           expression = {};
         }
+		
+		options = {
+          mode: 'exact',
+          elements: attrs.id
+		}
+        // extend options with initial uiTinymceConfig and options from directive attribute value
+        angular.extend(options, uiTinymceConfig, expression);
 
-        // make config'ed setup method available
-        if (expression.setup) {
-          var configSetup = expression.setup;
-          delete expression.setup;
-        }
-
-        options = {
+        options.setup = 
           // Update model when calling setContent (such as from the source editor popup)
-          setup: function (ed) {
+          function (ed) {
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
@@ -68,15 +69,11 @@ angular.module('ui.tinymce', [])
               ed.save();
               updateView();
             });
-            if (configSetup) {
-              configSetup(ed);
+            if (expression.setup) {
+              expression.setup(ed);
             }
-          },
-          mode: 'exact',
-          elements: attrs.id
-        };
-        // extend options with initial uiTinymceConfig and options from directive attribute value
-        angular.extend(options, uiTinymceConfig, expression);
+          }
+		
         setTimeout(function () {
           tinymce.init(options);
         });
