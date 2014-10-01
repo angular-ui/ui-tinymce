@@ -5,7 +5,7 @@ module.exports = function (config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/tinymce/tinymce.min.js',
+      'bower_components/tinymce/tinymce.js',
       'src/tinymce.js',
       'test/*.spec.js',
       {pattern: 'bower_components/tinymce/themes/modern/theme.min.js', served: true},
@@ -13,6 +13,6 @@ module.exports = function (config) {
     ],
     singleRun: false,
     autoWatch: true,
-    browsers: [ 'Chrome' ],
+    browsers: [ 'Chrome', 'Firefox' ],
   });
 };

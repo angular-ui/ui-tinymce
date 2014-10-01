@@ -66,7 +66,8 @@ describe('uiTinymce', function () {
 
       scope.$destroy();
 
-      expect(tinymce.get('foo')).toBeUndefined();
+      // This could either be undefined or null, so check for both
+      expect(tinymce.get('foo')).toBeFalsy();
 
       done();
     });
