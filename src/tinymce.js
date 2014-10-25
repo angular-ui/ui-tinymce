@@ -8,8 +8,11 @@ angular.module('ui.tinymce', [])
     var generatedIds = 0;
     return {
       priority: 10,
-      require: 'ngModel',
-      link: function (scope, elm, attrs, ngModel) {
+      require: ['ngModel', '^?form'],
+      link: function (scope, elm, attrs, ctrls) {
+        var ngModel = ctrls[0],
+          form = ctrls[1] || null;
+
         var expression, options, tinyInstance,
           updateView = function () {
             ngModel.$setViewValue(elm.val());
@@ -42,6 +45,7 @@ angular.module('ui.tinymce', [])
             ed.on('init', function(args) {
               ngModel.$render();
               ngModel.$setPristine();
+              form.$setPristine();
             });
             // Update model on button click
             ed.on('ExecCommand', function (e) {
