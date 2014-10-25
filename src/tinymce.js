@@ -90,8 +90,10 @@ angular.module('ui.tinymce', [])
           }
         };
 
-        scope.$on('$destroy', function() {
-          if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
+        elm.on('$destroy', function() {
+          if (!tinyInstance) {
+            tinyInstance = tinymce.get(attrs.id);
+          }
           if (tinyInstance) {
             tinyInstance.remove();
             tinyInstance = null;
