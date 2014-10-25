@@ -27,6 +27,12 @@ describe('uiTinymce', function () {
     scope.$apply();
   }
 
+  it('should be pristine on load', function() {
+    compile();
+    expect(element.find('textarea').controller('form').$pristine).toBe(true);
+    expect(element.find('textarea').controller('ngModel').$pristine).toBe(true);
+  });
+
   describe('compiling this directive', function() {
 
     it('should include the passed options', function() {
