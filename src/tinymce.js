@@ -85,7 +85,7 @@ angular.module('ui.tinymce', [])
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
           }
-          if (tinyInstance) {
+          if (tinyInstance && tinyInstance.getContent() != ngModel.$viewValue) {
             tinyInstance.setContent(ngModel.$viewValue || '');
           }
         };
