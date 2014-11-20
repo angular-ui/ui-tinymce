@@ -23,6 +23,15 @@ angular.module('ui.tinymce', [])
           attrs.$set('id', 'uiTinymce' + generatedIds++);
         }
 
+    	scope.$watch(function(){
+    		return ngModel.$modelValue;
+    	}, function(modelValue) {
+    		var tinyInstance = tinymce.get(attrs.id);
+    		if(tinyInstance && tinyInstance.getContent() !== modelValue) {
+    			tinyInstance.setContent(modelValue);
+    		}
+    	});
+
         if (attrs.uiTinymce) {
           expression = scope.$eval(attrs.uiTinymce);
         } else {
