@@ -43,30 +43,28 @@ angular.module('ui.tinymce', [])
               ngModel.$render();
               ngModel.$setPristine();
             });
-            // Update model on button click
-            ed.on('ExecCommand', function (e) {
+            var updateModel = function(){
               ed.save();
               updateView();
-            });
-            // Update model on keypress
-            ed.on('KeyUp', function (e) {
-              ed.save();
-              updateView();
-            });
+            }
+            var eventsThatInvokeModelUpdate = [
+                'ExecCommand', // on button click
+                'KeyUp', // on keypress
+                'ObjectResized', // when an object has been resized (table, image)
+                'change' // when content inside the editor has changed
+            ];
+            //add model update for all of these events
+            for(var i=0; i<eventsThatInvokeModelUpdate.length; i++){
+              ed.on(eventsThatInvokeModelUpdate[i], updateModel);
+            }
             // Update model on change, i.e. copy/pasted text, plugins altering content
             ed.on('SetContent', function (e) {
               if (!e.initial && ngModel.$viewValue !== e.content) {
-                ed.save();
-                updateView();
+                updateModel();
               }
             });
             ed.on('blur', function(e) {
                 elm.blur();
-            });
-            // Update model when an object has been resized (table, image)
-            ed.on('ObjectResized', function (e) {
-              ed.save();
-              updateView();
             });
             if (configSetup) {
               configSetup(ed);
