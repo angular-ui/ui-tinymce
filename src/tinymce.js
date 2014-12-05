@@ -86,7 +86,10 @@ angular.module('ui.tinymce', [])
             tinyInstance = tinymce.get(attrs.id);
           }
           // tinymce replaces "\r\n" to "\n", so we have to do the same on model value
-          if (tinyInstance && tinyInstance.getContent() != ngModel.$viewValue.replace(/\r\n/g, "\n")) {
+          if (tinyInstance
+            && ngModel.$viewValue !== undefined
+            && tinyInstance.getContent() != ngModel.$viewValue.replace(/\r\n/g, "\n")
+          ) {
             tinyInstance.setContent(ngModel.$viewValue || '');
           }
         };
