@@ -86,7 +86,9 @@ angular.module('ui.tinymce', [])
             tinyInstance = tinymce.get(attrs.id);
           }
           if (tinyInstance) {
-            tinyInstance.setContent(ngModel.$viewValue || '');
+            var content = ngModel.$viewValue || '';
+            tinyInstance.setContent(content);
+            elm.html(content);
           }
         };
 
