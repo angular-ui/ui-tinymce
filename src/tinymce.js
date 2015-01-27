@@ -13,9 +13,14 @@ angular.module('ui.tinymce', [])
       link: function (scope, elm, attrs, ngModel) {
         var editor, expression, options, tinyInstance,
           updateView = function () {
-            ngModel.$setViewValue(editor.getContent({ format : 'raw' }));
-            if (!scope.$root.$$phase) {
-              scope.$apply();
+            var v = editor.getContent({ format : 'raw' });
+            var newStripped = v.replace(/\s+/g,'');
+            var curStripped = ngModel.$viewValue.replace(/\s+/g,' ');
+            if (newStripped !== curStripped) {
+              ngModel.$setViewValue(v);
+              if (!scope.$root.$$phase) {
+                scope.$apply();
+              }
             }
           };
 
