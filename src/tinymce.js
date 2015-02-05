@@ -1,5 +1,5 @@
 /**
- * Binds a TinyMCE widget to <textarea> elements.
+ * Binds a TinyMCE widget to element.
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
@@ -10,9 +10,9 @@ angular.module('ui.tinymce', [])
       priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance,
+        var expression, options, tinyInstance, inlineHiddenInputElement,
           updateView = function () {
-            ngModel.$setViewValue(elm.val());
+            ngModel.$setViewValue((options.inline ? inlineHiddenInputElement : elm).val());
             if (!scope.$root.$$phase) {
               scope.$apply();
             }
@@ -61,7 +61,9 @@ angular.module('ui.tinymce', [])
               }
             });
             ed.on('blur', function(e) {
-                elm.blur();
+              if (!options.inline) {
+                elm.triggerHandler("blur");
+              }
             });
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function (e) {
@@ -84,6 +86,9 @@ angular.module('ui.tinymce', [])
         ngModel.$render = function() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
+            if (tinyInstance && options.inline) {
+              inlineHiddenInputElement = elm.next();
+            }
           }
           if (tinyInstance) {
             tinyInstance.setContent(ngModel.$viewValue || '');

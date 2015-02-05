@@ -21,17 +21,21 @@ describe('uiTinymce', function () {
   /**
    * Asynchronously runs the compilation.
    */
-  function compile() {
-    element = $compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
+  function compile(tinymceHtml) {
+    element = $compile(tinymceHtml)(scope);
     angular.element(document.getElementsByTagName('body')[0]).append(element);
     scope.$apply();
+  }
+
+  function compileBasic() {
+    compile('<form><textarea id="foo" ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>');
   }
 
   describe('compiling this directive', function () {
 
     it('should include the passed options', function (done) {
       spyOn(tinymce, 'init');
-      compile();
+      compileBasic();
       setTimeout(function () {
         expect(tinymce.init).toHaveBeenCalled();
         expect(tinymce.init.calls.mostRecent().args[0].foo).toBe('bar');
@@ -41,7 +45,7 @@ describe('uiTinymce', function () {
 
     it('should include the default options', function (done) {
       spyOn(tinymce, 'init');
-      compile();
+      compileBasic();
       setTimeout(function () {
         expect(tinymce.init).toHaveBeenCalled();
         expect(tinymce.init.calls.mostRecent().args[0].tinymce.bar).toBe('baz');
@@ -51,7 +55,7 @@ describe('uiTinymce', function () {
 
     it('should execute the passed `setup` option', function (done) {
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
-      compile();
+      compileBasic();
       setTimeout(function () {
         expect(scope.setupFooBar).toHaveBeenCalled();
         done();
@@ -60,13 +64,13 @@ describe('uiTinymce', function () {
   });
 
   it('should remove tinymce instance on $scope destruction', function (done) {
-    compile();
+    compileBasic();
     setTimeout(function () {
       expect(tinymce.get('foo')).toBeDefined();
 
       scope.$destroy();
 
-      expect(tinymce.get('foo')).toBeUndefined();
+      expect(tinymce.get('foo')).toBeNull();
 
       done();
     });
@@ -74,7 +78,7 @@ describe('uiTinymce', function () {
 
   describe('setting a value to the model', function () {
     it('should update the editor', function(done) {
-      compile();
+      compileBasic();
       setTimeout(function () {
         scope.foo = text;
         scope.$apply();
@@ -85,7 +89,7 @@ describe('uiTinymce', function () {
       });
     });
     it('should handle undefined gracefully', function (done) {
-      compile();
+      compileBasic();
       setTimeout(function () {
         scope.foo = undefined;
         scope.$apply();
@@ -96,7 +100,7 @@ describe('uiTinymce', function () {
       });
     });
     it('should handle null gracefully', function (done) {
-      compile();
+      compileBasic();
       setTimeout(function () {
         scope.foo = null;
         scope.$apply();
@@ -105,6 +109,25 @@ describe('uiTinymce', function () {
 
         done();
       });
+    });
+  });
+
+  describe('inline mode', function () {
+    it('should properly update model', function (done) {
+      scope.options = {
+        inline: true,
+        setup: function(editor) {
+          editor.on('init', function() {
+            scope.inline = text;
+            scope.$apply();
+
+            expect(editor.getContent()).toEqual(text);
+
+            done();
+          });
+        }
+      };
+      compile('<form><div id="inline" ui-tinymce="options" ng-model="inline"></div></form>');
     });
   });
   /*describe('using the editor', function () {
