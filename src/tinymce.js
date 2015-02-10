@@ -6,15 +6,26 @@ angular.module('ui.tinymce', [])
   .directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
+
+    function simple(v) {
+      return v.replace(/\s+/g,'');
+    }
+
     return {
       priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance,
+        var editor, expression, options, tinyInstance,
           updateView = function () {
-            ngModel.$setViewValue(elm.val());
-            if (!scope.$root.$$phase) {
-              scope.$apply();
+            var v = editor.getContent({ format : 'raw' });
+            var newStripped = simple(v);
+            var curStripped = simple(ngModel.$viewValue);
+            
+            if (newStripped !== curStripped) {
+              ngModel.$setViewValue(v);
+              if (!scope.$root.$$phase) {
+                scope.$apply();
+              }
             }
           };
 
@@ -38,6 +49,8 @@ angular.module('ui.tinymce', [])
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
+            editor = ed;
+            
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
