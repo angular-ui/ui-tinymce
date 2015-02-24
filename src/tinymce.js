@@ -12,7 +12,11 @@ angular.module('ui.tinymce', [])
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
           updateView = function () {
-            ngModel.$setViewValue(elm.val());
+        	  if(elm.prop("tagName").toLowerCase() === 'textarea') {
+              ngModel.$setViewValue(elm.val());
+            } else {
+              ngModel.$setViewValue(elm.html());
+            }
             if (!scope.$root.$$phase) {
               scope.$apply();
             }
