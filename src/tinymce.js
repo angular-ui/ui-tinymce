@@ -77,6 +77,10 @@ angular.module('ui.tinymce', [])
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
+	
+	// extend options with the tinymceOptions from the controller
+        angular.extend(options, scope.tinymceOptions, expression);
+
         setTimeout(function () {
           tinymce.init(options);
         });
