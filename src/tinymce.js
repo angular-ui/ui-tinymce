@@ -32,7 +32,10 @@ angular.module('ui.tinymce', [])
         // make config'ed setup method available
         if (expression.setup) {
           var configSetup = expression.setup;
-          delete expression.setup;
+          
+          // copy expression
+          var expressionCopy = angular.extend({}, expression);
+          delete expressionCopy.setup;
         }
 
         options = {
@@ -76,7 +79,7 @@ angular.module('ui.tinymce', [])
           elements: attrs.id
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
-        angular.extend(options, uiTinymceConfig, expression);
+        angular.extend(options, uiTinymceConfig, expressionCopy);
         setTimeout(function () {
           tinymce.init(options);
         });
