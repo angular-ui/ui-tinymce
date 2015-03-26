@@ -30,11 +30,11 @@ angular.module('ui.tinymce', [])
         }
 
         // make config'ed setup method available
+        var expressionCopy = angular.extend({}, expression);
         if (expression.setup) {
           var configSetup = expression.setup;
           
           // copy expression
-          var expressionCopy = angular.extend({}, expression);
           delete expressionCopy.setup;
         }
 
