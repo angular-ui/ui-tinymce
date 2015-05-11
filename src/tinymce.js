@@ -15,8 +15,12 @@ angular.module('ui.tinymce', [])
         }
 
         var expression, options, tinyInstance,
-          updateView = function() {
-            ngModel.$setViewValue(element.val());
+          updateView = function (editor) {
+            if(typeof options.raw !== 'undefined' && options.raw == true) {
+              ngModel.$setViewValue(editor.getContent({format: 'text'}).trim());
+            } else {
+              ngModel.$setViewValue(elm.val());
+            }
             if (!$rootScope.$$phase) {
               scope.$apply();
             }
@@ -48,18 +52,18 @@ angular.module('ui.tinymce', [])
             // Update model on button click
             ed.on('ExecCommand', function(e) {
               ed.save();
-              updateView();
+              updateView(ed);
             });
             // Update model on keypress
             ed.on('KeyUp', function(e) {
               ed.save();
-              updateView();
+              updateView(ed);
             });
             // Update model on change, i.e. copy/pasted text, plugins altering content
             ed.on('SetContent', function(e) {
               if (!e.initial && ngModel.$viewValue !== e.content) {
                 ed.save();
-                updateView();
+                updateView(ed);
               }
             });
             ed.on('blur', function(e) {
@@ -68,7 +72,7 @@ angular.module('ui.tinymce', [])
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function(e) {
               ed.save();
-              updateView();
+              updateView(ed);
             });
             if (configSetup) {
               configSetup(ed);
