@@ -13,7 +13,7 @@ angular.module('ui.tinymce', [])
         var expression, options, tinyInstance,
           updateView = function (editor) {
             if(typeof options.raw !== 'undefined' && options.raw == true) {
-              ngModel.$setViewValue(editor.getContent({format: "text"}));
+              ngModel.$setViewValue(editor.getContent({format: "text"}).trim());
             } else {
               ngModel.$setViewValue(elm.val());
             }
