@@ -10,7 +10,9 @@ angular.module('ui.tinymce', [])
       priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
-        var expression, options, tinyInstance,
+        var expression, 
+          expressionCopy, // to clone `expression` keeping it from an init to an other
+          options, tinyInstance,
           updateView = function () {
             ngModel.$setViewValue(elm.val());
             if (!scope.$root.$$phase) {
@@ -32,7 +34,10 @@ angular.module('ui.tinymce', [])
         // make config'ed setup method available
         if (expression.setup) {
           var configSetup = expression.setup;
-          delete expression.setup;
+          
+          // copy expression to keep `expression.setup` available for further inits
+          expressionCopy = angular.extend({}, expression);
+          delete expressionCopy.setup;
         }
 
         options = {
@@ -76,7 +81,8 @@ angular.module('ui.tinymce', [])
           elements: attrs.id
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
-        angular.extend(options, uiTinymceConfig, expression);
+        // using `expressionCopy` instead of expression to keep `expression.setup` available for further inits
+        angular.extend(options, uiTinymceConfig, expressionCopy);        
         setTimeout(function () {
           tinymce.init(options);
         });
