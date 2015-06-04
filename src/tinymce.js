@@ -48,17 +48,10 @@ angular.module('ui.tinymce', [])
               ed.save();
               updateView();
             });
-            // Update model on keypress
-            ed.on('KeyUp', function (e) {
+            // Update model on change
+            ed.on('change', function (e) {
               ed.save();
               updateView();
-            });
-            // Update model on change, i.e. copy/pasted text, plugins altering content
-            ed.on('SetContent', function (e) {
-              if (!e.initial && ngModel.$viewValue !== e.content) {
-                ed.save();
-                updateView();
-              }
             });
             ed.on('blur', function(e) {
                 elm.blur();
