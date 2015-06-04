@@ -7,6 +7,7 @@ angular.module('ui.tinymce', [])
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
+      priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
         var expression, options, tinyInstance,
@@ -16,6 +17,7 @@ angular.module('ui.tinymce', [])
               scope.$apply();
             }
           };
+
         // generate an ID if not present
         if (!attrs.id) {
           attrs.$set('id', 'uiTinymce' + generatedIds++);
@@ -26,12 +28,20 @@ angular.module('ui.tinymce', [])
         } else {
           expression = {};
         }
+
+        // make config'ed setup method available
+        if (expression.setup) {
+          var configSetup = expression.setup;
+          delete expression.setup;
+        }
+
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function (ed) {
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
+              ngModel.$setPristine();
             });
             // Update model on button click
             ed.on('ExecCommand', function (e) {
@@ -45,14 +55,21 @@ angular.module('ui.tinymce', [])
             });
             // Update model on change, i.e. copy/pasted text, plugins altering content
             ed.on('SetContent', function (e) {
-              if(!e.initial){
+              if (!e.initial && ngModel.$viewValue !== e.content) {
                 ed.save();
                 updateView();
               }
             });
-            if (expression.setup) {
-              scope.$eval(expression.setup);
-              delete expression.setup;
+            ed.on('blur', function(e) {
+                elm.blur();
+            });
+            // Update model when an object has been resized (table, image)
+            ed.on('ObjectResized', function (e) {
+              ed.save();
+              updateView();
+            });
+            if (configSetup) {
+              configSetup(ed);
             }
           },
           mode: 'exact',
@@ -64,7 +81,6 @@ angular.module('ui.tinymce', [])
           tinymce.init(options);
         });
 
-
         ngModel.$render = function() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
@@ -73,6 +89,14 @@ angular.module('ui.tinymce', [])
             tinyInstance.setContent(ngModel.$viewValue || '');
           }
         };
+
+        scope.$on('$destroy', function() {
+          if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
+          if (tinyInstance) {
+            tinyInstance.remove();
+            tinyInstance = null;
+          }
+        });
       }
     };
   }]);
