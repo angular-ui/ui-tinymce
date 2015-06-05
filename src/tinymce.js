@@ -18,7 +18,7 @@ angular.module('ui.tinymce', [])
             if (options.raw === true) {
               ngModel.$setViewValue(editor.getContent({format: 'text'}).trim());
             } else {
-              ngModel.$setViewValue(element.val());
+              ngModel.$setViewValue(editor.getContent().trim());
             }
             if (!$rootScope.$$phase) {
               scope.$apply();
