@@ -59,6 +59,7 @@ describe('uiTinymce', function () {
     expect(tinymce.get('foo')).toBeNull();
   });
 
+  // TODO: Figure out why such a large timeout is needed
   describe('setting a value to the model', function() {
     it('should update the editor', function(done) {
       compile();
@@ -74,7 +75,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 20);
+      }, 50);
     });
     it('should handle undefined gracefully', function(done) {
       compile();
@@ -90,7 +91,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 20);
+      }, 50);
     });
     it('should handle null gracefully', function(done) {
       compile();
@@ -106,7 +107,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 20);
+      }, 50);
     });
   });
   /*describe('using the editor', function () {
