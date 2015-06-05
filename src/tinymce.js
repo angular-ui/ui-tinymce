@@ -3,13 +3,17 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['uiTinymceConfig', function ($rootScope, uiTinymceConfig) {
+  .directive('uiTinymce', ['$rootScope', '$window', 'uiTinymceConfig', function ($rootScope, $window, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
       priority: 10,
       require: 'ngModel',
       link: function (scope, elm, attrs, ngModel) {
+        if (!$window.tinymce) {
+          return;
+        }
+
         var expression, options, tinyInstance,
           updateView = function () {
             ngModel.$setViewValue(elm.val());
@@ -77,9 +81,7 @@ angular.module('ui.tinymce', [])
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
-        setTimeout(function() {
-          tinymce.init(options);
-        });
+        tinymce.init(options);
 
         ngModel.$render = function() {
           if (!tinyInstance) {
