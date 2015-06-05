@@ -3,7 +3,7 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['uiTinymceConfig', function (uiTinymceConfig) {
+  .directive('uiTinymce', ['uiTinymceConfig', function ($rootScope, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
@@ -13,7 +13,7 @@ angular.module('ui.tinymce', [])
         var expression, options, tinyInstance,
           updateView = function () {
             ngModel.$setViewValue(elm.val());
-            if (!scope.$root.$$phase) {
+            if (!$rootScope.$$phase) {
               scope.$apply();
             }
           };
@@ -37,34 +37,34 @@ angular.module('ui.tinymce', [])
 
         options = {
           // Update model when calling setContent (such as from the source editor popup)
-          setup: function (ed) {
+          setup: function(ed) {
             var args;
             ed.on('init', function(args) {
               ngModel.$render();
               ngModel.$setPristine();
             });
             // Update model on button click
-            ed.on('ExecCommand', function (e) {
+            ed.on('ExecCommand', function(e) {
               ed.save();
               updateView();
             });
             // Update model on keypress
-            ed.on('KeyUp', function (e) {
+            ed.on('KeyUp', function(e) {
               ed.save();
               updateView();
             });
             // Update model on change, i.e. copy/pasted text, plugins altering content
-            ed.on('SetContent', function (e) {
+            ed.on('SetContent', function(e) {
               if (!e.initial && ngModel.$viewValue !== e.content) {
                 ed.save();
                 updateView();
               }
             });
             ed.on('blur', function(e) {
-                elm.blur();
+              elm.blur();
             });
             // Update model when an object has been resized (table, image)
-            ed.on('ObjectResized', function (e) {
+            ed.on('ObjectResized', function(e) {
               ed.save();
               updateView();
             });
@@ -77,7 +77,7 @@ angular.module('ui.tinymce', [])
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
-        setTimeout(function () {
+        setTimeout(function() {
           tinymce.init(options);
         });
 
