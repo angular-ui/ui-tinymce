@@ -15,6 +15,7 @@ describe('uiTinymce', function () {
 
   afterEach(function () {
     angular.module('ui.tinymce').value('uiTinymceConfig', {});
+    tinymce.remove('textarea');
     element.remove();
   });
 
