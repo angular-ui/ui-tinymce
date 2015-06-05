@@ -14,7 +14,7 @@ angular.module('ui.tinymce', [])
         }
 
         var expression, options, tinyInstance,
-          updateView = function (editor) {
+          updateView = function(editor) {
             if (options.raw === true) {
               ngModel.$setViewValue(editor.getContent({format: 'text'}).trim());
             } else {
@@ -74,7 +74,9 @@ angular.module('ui.tinymce', [])
               updateView(ed);
             });
             if (configSetup) {
-              configSetup(ed);
+              configSetup(ed, {
+                updateView: updateView
+              });
             }
           },
           selector: '#' + attrs.id
