@@ -73,6 +73,11 @@ angular.module('ui.tinymce', [])
               ed.save();
               updateView(ed);
             });
+            // Update model on node change (to detect color changes)
+            ed.on('nodeChange', function (e) {
+              ed.save();
+              updateView();
+            });
             if (configSetup) {
               configSetup(ed, {
                 updateView: updateView
@@ -94,8 +99,10 @@ angular.module('ui.tinymce', [])
           }
         };
 
-        scope.$on('$destroy', function() {
-          if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
+        elm.on('$destroy', function() {
+          if (!tinyInstance) {
+            tinyInstance = tinymce.get(attrs.id);
+          }
           if (tinyInstance) {
             tinyInstance.remove();
             tinyInstance = null;
