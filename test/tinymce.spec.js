@@ -75,7 +75,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 50);
+      }, 100);
     });
     it('should handle undefined gracefully', function(done) {
       compile();
@@ -91,7 +91,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 50);
+      }, 100);
     });
     it('should handle null gracefully', function(done) {
       compile();
@@ -107,7 +107,7 @@ describe('uiTinymce', function () {
         }
 
         done();
-      }, 50);
+      }, 100);
     });
   });
   /*describe('using the editor', function () {

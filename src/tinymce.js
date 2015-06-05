@@ -46,33 +46,27 @@ angular.module('ui.tinymce', [])
         options = {
           // Update model when calling setContent (such as from the source editor popup)
           setup: function(ed) {
-            var args;
-            ed.on('init', function(args) {
+            ed.on('init', function() {
               ngModel.$render();
               ngModel.$setPristine();
             });
             // Update model on button click
-            ed.on('ExecCommand', function(e) {
+            ed.on('ExecCommand', function() {
               ed.save();
               updateView(ed);
             });
-            // Update model on keypress
-            ed.on('KeyUp', function(e) {
-              ed.save();
-              updateView(ed);
-            });
-            // Update model on change, i.e. copy/pasted text, plugins altering content
-            ed.on('SetContent', function(e) {
-              if (!e.initial && ngModel.$viewValue !== e.content) {
+            // Update model on change
+            ed.on('change', function(e) {
+              if (!e.originalEvent) {
                 ed.save();
                 updateView(ed);
               }
             });
-            ed.on('blur', function(e) {
+            ed.on('blur', function() {
               element[0].blur();
             });
             // Update model when an object has been resized (table, image)
-            ed.on('ObjectResized', function(e) {
+            ed.on('ObjectResized', function() {
               ed.save();
               updateView(ed);
             });
@@ -88,12 +82,16 @@ angular.module('ui.tinymce', [])
         angular.extend(options, uiTinymceConfig, expression);
         tinymce.init(options);
 
+        ngModel.$formatters.unshift(function(modelValue) {
+          return modelValue || '';
+        });
+
         ngModel.$render = function() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
           }
           if (tinyInstance) {
-            tinyInstance.setContent(ngModel.$viewValue || '');
+            tinyInstance.setContent(ngModel.$viewValue);
           }
         };
 
