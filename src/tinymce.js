@@ -3,20 +3,20 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['$rootScope', '$window', 'uiTinymceConfig', function ($rootScope, $window, uiTinymceConfig) {
+  .directive('uiTinymce', ['$rootScope', '$window', 'uiTinymceConfig', function($rootScope, $window, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
       priority: 10,
       require: 'ngModel',
-      link: function (scope, elm, attrs, ngModel) {
+      link: function(scope, element, attrs, ngModel) {
         if (!$window.tinymce) {
           return;
         }
 
         var expression, options, tinyInstance,
-          updateView = function () {
-            ngModel.$setViewValue(elm.val());
+          updateView = function() {
+            ngModel.$setViewValue(element.val());
             if (!$rootScope.$$phase) {
               scope.$apply();
             }
@@ -65,7 +65,7 @@ angular.module('ui.tinymce', [])
               }
             });
             ed.on('blur', function(e) {
-              elm[0].blur();
+              element[0].blur();
             });
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function(e) {
