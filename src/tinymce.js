@@ -7,7 +7,6 @@ angular.module('ui.tinymce', [])
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     return {
-      priority: 10,
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
         if (!$window.tinymce) {
