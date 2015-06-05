@@ -27,11 +27,9 @@ angular.module('ui.tinymce', [])
           attrs.$set('id', 'uiTinymce' + generatedIds++);
         }
 
-        if (attrs.uiTinymce) {
-          expression = scope.$eval(attrs.uiTinymce);
-        } else {
-          expression = {};
-        }
+        expression = {};
+
+        angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
         // make config'ed setup method available
         if (expression.setup) {
@@ -76,8 +74,7 @@ angular.module('ui.tinymce', [])
               configSetup(ed);
             }
           },
-          mode: 'exact',
-          elements: attrs.id
+          selector: '#' + attrs.id
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);

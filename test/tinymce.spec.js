@@ -4,19 +4,18 @@ describe('uiTinymce', function () {
 
   var scope, $compile, element, text = '<p>Hello</p>';
   beforeEach(module('ui.tinymce'));
-  beforeEach(function () {
+  beforeEach(function() {
     // throw some garbage in the tinymce cfg to be sure it's getting thru to the directive
     angular.module('ui.tinymce').value('uiTinymceConfig', {tinymce: {bar: 'baz'}});
   });
-  beforeEach(inject(function (_$rootScope_, _$compile_) {
+  beforeEach(inject(function(_$rootScope_, _$compile_) {
     scope = _$rootScope_.$new();
     $compile = _$compile_;
   }));
 
-  afterEach(function () {
+  afterEach(function() {
     angular.module('ui.tinymce').value('uiTinymceConfig', {});
     tinymce.remove('textarea');
-    element.remove();
   });
 
   /**
@@ -28,84 +27,86 @@ describe('uiTinymce', function () {
     scope.$apply();
   }
 
-  describe('compiling this directive', function () {
+  describe('compiling this directive', function() {
 
-    it('should include the passed options', function (done) {
+    it('should include the passed options', function() {
       spyOn(tinymce, 'init');
       compile();
-      setTimeout(function () {
-        expect(tinymce.init).toHaveBeenCalled();
-        expect(tinymce.init.calls.mostRecent().args[0].foo).toBe('bar');
-        done();
-      });
+      expect(tinymce.init).toHaveBeenCalled();
+      expect(tinymce.init.calls.mostRecent().args[0].foo).toBe('bar');
     });
 
-    it('should include the default options', function (done) {
+    it('should include the default options', function() {
       spyOn(tinymce, 'init');
       compile();
-      setTimeout(function () {
-        expect(tinymce.init).toHaveBeenCalled();
-        expect(tinymce.init.calls.mostRecent().args[0].tinymce.bar).toBe('baz');
-        done();
-      });
+      expect(tinymce.init).toHaveBeenCalled();
+      expect(tinymce.init.calls.mostRecent().args[0].tinymce.bar).toBe('baz');
     });
 
-    it('should execute the passed `setup` option', function (done) {
+    it('should execute the passed `setup` option', function() {
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
       compile();
-      setTimeout(function () {
-        expect(scope.setupFooBar).toHaveBeenCalled();
-        done();
-      });
+      expect(scope.setupFooBar).toHaveBeenCalled();
     });
   });
 
-  it('should remove tinymce instance on $scope destruction', function (done) {
+  it('should remove tinymce instance on $scope destruction', function() {
     compile();
-    setTimeout(function () {
-      expect(tinymce.get('foo')).toBeDefined();
+    expect(tinymce.get('foo')).toBeDefined();
 
-      scope.$destroy();
+    scope.$destroy();
 
-      expect(tinymce.get('foo')).toBeNull();
-
-      done();
-    });
+    expect(tinymce.get('foo')).toBeNull();
   });
 
-  describe('setting a value to the model', function () {
+  describe('setting a value to the model', function() {
     it('should update the editor', function(done) {
       compile();
-      setTimeout(function () {
+      setTimeout(function() {
         scope.foo = text;
         scope.$apply();
 
-        expect(tinymce.get('foo').getContent()).toEqual(text);
+        try {
+          expect(tinymce.get('foo').getContent()).toEqual(text);
+        } catch(e) {
+          expect(true).toBe(false);
+          done();
+        }
 
         done();
-      });
+      }, 20);
     });
-    it('should handle undefined gracefully', function (done) {
+    it('should handle undefined gracefully', function(done) {
       compile();
-      setTimeout(function () {
+      setTimeout(function() {
         scope.foo = undefined;
         scope.$apply();
 
-        expect(tinymce.get('foo').getContent()).toEqual('');
+        try {
+          expect(tinymce.get('foo').getContent()).toEqual('');
+        } catch(e) {
+          expect(true).toBe(false);
+          done();
+        }
 
         done();
-      });
+      }, 20);
     });
-    it('should handle null gracefully', function (done) {
+    it('should handle null gracefully', function(done) {
       compile();
-      setTimeout(function () {
+      setTimeout(function() {
         scope.foo = null;
         scope.$apply();
 
-        expect(tinymce.get('foo').getContent()).toEqual('');
+        try {
+          expect(tinymce.get('foo').getContent()).toEqual('');
+        } catch(e) {
+          expect(true).toBe(false);
+          done();
+        }
 
         done();
-      });
+      }, 20);
     });
   });
   /*describe('using the editor', function () {
