@@ -87,9 +87,7 @@ angular.module('ui.tinymce', [])
         });
 
         ngModel.$render = function() {
-          if (!tinyInstance) {
-            tinyInstance = tinymce.get(attrs.id);
-          }
+          ensureInstance();
 
           var format = options.raw ? 'text' : 'raw';
 
@@ -103,17 +101,13 @@ angular.module('ui.tinymce', [])
 
         attrs.$observe('disabled', function(disabled) {
           if (disabled) {
-            if (!tinyInstance) {
-              tinyInstance = tinymce.get(attrs.id);
-            }
+            ensureInstance();
 
             if (tinyInstance) {
               tinyInstance.getBody().setAttribute('contenteditable', false);
             }
           } else {
-            if (!tinyInstance) {
-              tinyInstance = tinymce.get(attrs.id);
-            }
+            ensureInstance();
 
             if (tinyInstance) {
               tinyInstance.getBody().setAttribute('contenteditable', true);
@@ -122,12 +116,19 @@ angular.module('ui.tinymce', [])
         });
 
         scope.$on('$destroy', function() {
-          if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
+          ensureInstance();
+
           if (tinyInstance) {
             tinyInstance.remove();
             tinyInstance = null;
           }
         });
+
+        function ensureInstance() {
+          if (!tinyInstance) {
+            tinyInstance = tinymce.get(attrs.id);
+          }
+        }
       }
     };
   }]);
