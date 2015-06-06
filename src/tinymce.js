@@ -50,11 +50,13 @@ angular.module('ui.tinymce', [])
                 form.$setPristine();
               }
             });
+
             // Update model on button click
             ed.on('ExecCommand', function() {
               ed.save();
               updateView(ed);
             });
+
             // Update model on change
             ed.on('change', function(e) {
               if (!e.originalEvent) {
@@ -62,14 +64,21 @@ angular.module('ui.tinymce', [])
                 updateView(ed);
               }
             });
+
             ed.on('blur', function() {
               element[0].blur();
             });
+
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function() {
               ed.save();
               updateView(ed);
             });
+
+            ed.on('remove', function() {
+              element.remove();
+            });
+
             if (expression.setup) {
               expression.setup(ed, {
                 updateView: updateView
