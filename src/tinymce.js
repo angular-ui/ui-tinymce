@@ -101,6 +101,26 @@ angular.module('ui.tinymce', [])
           }
         };
 
+        attrs.$observe('disabled', function(disabled) {
+          if (disabled) {
+            if (!tinyInstance) {
+              tinyInstance = tinymce.get(attrs.id);
+            }
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', false);
+            }
+          } else {
+            if (!tinyInstance) {
+              tinyInstance = tinymce.get(attrs.id);
+            }
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', true);
+            }
+          }
+        });
+
         scope.$on('$destroy', function() {
           if (!tinyInstance) { tinyInstance = tinymce.get(attrs.id); }
           if (tinyInstance) {
