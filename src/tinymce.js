@@ -28,9 +28,6 @@ angular.module('ui.tinymce', [])
             if (!$rootScope.$$phase) {
               scope.$apply();
             }
-            if (angular.isFunction(options.onChange)) {
-              options.onChange();
-            }
           };
 
         // generate an ID

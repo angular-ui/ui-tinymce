@@ -87,3 +87,11 @@ If you add the ng-model directive to same the element as ui-tinymce then the tex
 
 _The ui-tinymce directive stores the configuration options as specified in the [TinyMCE documentation](http://www.tinymce.com/wiki.php/Configuration) and expects the model value to be a html string or raw text, depending on whether `raw` is `true` (default value is `false`)._
 
+## Options
+
+The directive supports all of the standard TinyMCE initialization options as listed [here](http://www.tinymce.com/wiki.php/Configuration).
+
+In addition, it supports these additional optional options
+
+- `format` Format to get content as, i.e. 'raw' for raw HTML, or 'text' for text only. Documentation [here](http://www.tinymce.com/wiki.php/api4:method.tinymce.Editor.getContent)
+- `trusted` When `true`, all TinyMCE content that is set to `ngModel` will be whitelisted by `$sce`
