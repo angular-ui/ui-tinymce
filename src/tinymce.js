@@ -7,6 +7,10 @@ angular.module('ui.tinymce', [])
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     var ID_ATTR = 'ui-tinymce';
+    if (uiTinymceConfig.baseUrl) {
+      tinymce.baseURL = uiTinymceConfig.baseUrl;
+    }
+
     return {
       require: ['ngModel', '^?form'],
       link: function(scope, element, attrs, ctrls) {
