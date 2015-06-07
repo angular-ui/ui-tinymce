@@ -3,9 +3,10 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['$rootScope', '$window', 'uiTinymceConfig', function($rootScope, $window, uiTinymceConfig) {
+  .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', 'uiTinymceConfig', function($rootScope, $compile, $timeout, $window, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
+    var ID_ATTR = 'ui-tinymce';
     return {
       require: ['ngModel', '^?form'],
       link: function(scope, element, attrs, ctrls) {
@@ -31,10 +32,8 @@ angular.module('ui.tinymce', [])
             }
           };
 
-        // generate an ID if not present
-        if (!attrs.id) {
-          attrs.$set('id', 'uiTinymce' + generatedIds++);
-        }
+        // generate an ID
+        attrs.$set('id', ID_ATTR + '-' + generatedIds++);
 
         expression = {};
 
@@ -84,12 +83,12 @@ angular.module('ui.tinymce', [])
                 updateView: updateView
               });
             }
-          },
-          selector: '#' + attrs.id
+          }
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
         tinymce.init(options);
+        tinymce.execCommand('mceAddEditor', false, attrs.id);
 
         ngModel.$formatters.unshift(function(modelValue) {
           return modelValue || '';
@@ -121,6 +120,19 @@ angular.module('ui.tinymce', [])
             if (tinyInstance) {
               tinyInstance.getBody().setAttribute('contenteditable', true);
             }
+          }
+        });
+
+        scope.$on('$tinymce:refresh', function(e, id) {
+          var eid = attrs.id;
+          if (angular.isUndefined(id) || id === eid) {
+            var parentElement = element.parent();
+            var clonedElement = element.clone();
+            clonedElement.removeAttr('id');
+            tinymce.execCommand('mceRemoveEditor', false, eid);
+            $timeout(function() {
+              parentElement.append($compile(clonedElement)(scope));
+            }, 3000);
           }
         });
 
