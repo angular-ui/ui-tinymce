@@ -59,6 +59,8 @@ Apply the directive to your form elements:
 
 **Be sure not to set an `id` attribute**. This is because the directive needs to maintain selector knowledge in order to handle buggy behavior in TinyMCE when DOM manipulation is involved, such as in a reordering of HTML through ng-repeat or DOM destruction/recreation through ng-if.
 
+When using other directives which do DOM manipulation involving elements with `ui-tinymce`, you may need to re-render the editor due to this buggy behavior with TinyMCE. For those situations, it is recommended to use the `$tinymce:refresh` event, which will handle re-rendering the editor to fix this problem.
+
 ## Working with ng-model
 
 The ui-tinymce directive plays nicely with the ng-model directive such as ng-required.
