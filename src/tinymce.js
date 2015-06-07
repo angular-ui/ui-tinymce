@@ -91,6 +91,9 @@ angular.module('ui.tinymce', [])
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
+        // Wrapped in $timeout due to $tinymce:refresh implementation, requires
+        // element to be present in DOM before instantiating editor when
+        // re-rendering directive
         $timeout(function() {
           tinymce.init(options);
         });
@@ -107,7 +110,9 @@ angular.module('ui.tinymce', [])
           // recreation of instances happen
           if (tinyInstance &&
             tinyInstance.getDoc() &&
-            tinyInstance.getContent({format: options.format}).trim() !== ngModel.$viewValue.replace(/\r\n/g, '\n')
+            (tinyInstance.getContent({format: options.format}).trim() !== ngModel.$viewValue.replace(/\r\n/g, '\n') ||
+              !ngModel.$viewValue ||
+              !ngModel.$viewValue.replace(/\r\n/g, '\n'))
           ) {
             tinyInstance.setContent(ngModel.$viewValue);
           }
