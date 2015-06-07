@@ -19,11 +19,7 @@ angular.module('ui.tinymce', [])
 
         var expression, options, tinyInstance,
           updateView = function(editor) {
-            if (options.raw === true) {
-              ngModel.$setViewValue(editor.getContent({format: 'text'}).trim());
-            } else {
-              ngModel.$setViewValue(editor.getContent().trim());
-            }
+            ngModel.$setViewValue(editor.getContent({format: options.format}).trim());
             if (!$rootScope.$$phase) {
               scope.$apply();
             }
@@ -83,12 +79,15 @@ angular.module('ui.tinymce', [])
                 updateView: updateView
               });
             }
-          }
+          },
+          format: 'raw',
+          selector: '#' + attrs.id
         };
         // extend options with initial uiTinymceConfig and options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
-        tinymce.init(options);
-        tinymce.execCommand('mceAddEditor', false, attrs.id);
+        $timeout(function() {
+          tinymce.init(options);
+        });
 
         ngModel.$formatters.unshift(function(modelValue) {
           return modelValue || '';
@@ -97,11 +96,12 @@ angular.module('ui.tinymce', [])
         ngModel.$render = function() {
           ensureInstance();
 
-          var format = options.raw ? 'text' : 'raw';
-
-          // tinymce replaces "\r\n" to "\n", so we have to do the same on model value
+          // tinymce replaces '\r\n' to '\n', so we have to do the same on model value
+          // instance.getDoc() check is a guard against null value when destruction &
+          // recreation of instances happen
           if (tinyInstance &&
-            tinyInstance.getContent({format: format}).trim() !== ngModel.$viewValue.replace(/\r\n/g, '\n')
+            tinyInstance.getDoc() &&
+            tinyInstance.getContent({format: options.format}).trim() !== ngModel.$viewValue.replace(/\r\n/g, '\n')
           ) {
             tinyInstance.setContent(ngModel.$viewValue);
           }
@@ -123,16 +123,19 @@ angular.module('ui.tinymce', [])
           }
         });
 
+        // This block is because of TinyMCE not playing well with removal and
+        // recreation of instances, requiring instances to have different
+        // selectors in order to render new instances properly
         scope.$on('$tinymce:refresh', function(e, id) {
           var eid = attrs.id;
           if (angular.isUndefined(id) || id === eid) {
             var parentElement = element.parent();
             var clonedElement = element.clone();
             clonedElement.removeAttr('id');
+            clonedElement.removeAttr('style');
+            clonedElement.removeAttr('aria-hidden');
             tinymce.execCommand('mceRemoveEditor', false, eid);
-            $timeout(function() {
-              parentElement.append($compile(clonedElement)(scope));
-            }, 3000);
+            parentElement.append($compile(clonedElement)(scope));
           }
         });
 
