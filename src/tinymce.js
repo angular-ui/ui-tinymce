@@ -3,7 +3,7 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', 'uiTinymceConfig', function($rootScope, $compile, $timeout, $window, uiTinymceConfig) {
+  .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', '$sce', 'uiTinymceConfig', function($rootScope, $compile, $timeout, $window, $sce, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
     var generatedIds = 0;
     var ID_ATTR = 'ui-tinymce';
@@ -19,7 +19,12 @@ angular.module('ui.tinymce', [])
 
         var expression, options, tinyInstance,
           updateView = function(editor) {
-            ngModel.$setViewValue(editor.getContent({format: options.format}).trim());
+            var content = editor.getContent({format: options.format}).trim();
+            if (options.trusted) {
+              content = $sce.trustAsHtml(content);
+            }
+
+            ngModel.$setViewValue(content);
             if (!$rootScope.$$phase) {
               scope.$apply();
             }

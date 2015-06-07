@@ -15,6 +15,6 @@
   <form method="post">
     <textarea id="tinymce" ui-tinymce ng-model="tinymce"></textarea>
   </form>
-  <div>{{tinymce}}</div>
+  <div ng-bind-html="tinymce"></div>
 </body>
 </html>
