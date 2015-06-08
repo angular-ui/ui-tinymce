@@ -24,9 +24,7 @@ angular.module('ui.tinymce', [])
         var expression, options, tinyInstance,
           updateView = function(editor) {
             var content = editor.getContent({format: options.format}).trim();
-            if (options.trusted) {
-              content = $sce.trustAsHtml(content);
-            }
+            content = $sce.trustAsHtml(content);
 
             ngModel.$setViewValue(content);
             if (!$rootScope.$$phase) {
@@ -42,7 +40,8 @@ angular.module('ui.tinymce', [])
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
         options = {
-          // Update model when calling setContent (such as from the source editor popup)
+          // Update model when calling setContent
+          // (such as from the source editor popup)
           setup: function(ed) {
             ed.on('init', function() {
               ngModel.$render();
@@ -60,10 +59,8 @@ angular.module('ui.tinymce', [])
 
             // Update model on change
             ed.on('change', function(e) {
-              if (!e.originalEvent) {
-                ed.save();
-                updateView(ed);
-              }
+              ed.save();
+              updateView(ed);
             });
 
             ed.on('blur', function() {
@@ -89,7 +86,8 @@ angular.module('ui.tinymce', [])
           format: 'raw',
           selector: '#' + attrs.id
         };
-        // extend options with initial uiTinymceConfig and options from directive attribute value
+        // extend options with initial uiTinymceConfig and
+        // options from directive attribute value
         angular.extend(options, uiTinymceConfig, expression);
         // Wrapped in $timeout due to $tinymce:refresh implementation, requires
         // element to be present in DOM before instantiating editor when
@@ -99,22 +97,26 @@ angular.module('ui.tinymce', [])
         });
 
         ngModel.$formatters.unshift(function(modelValue) {
-          return modelValue || '';
+          return modelValue ? $sce.trustAsHtml(modelValue) : '';
+        });
+
+        ngModel.$parsers.unshift(function(viewValue) {
+          return viewValue ? $sce.getTrustedHtml(viewValue) : '';
         });
 
         ngModel.$render = function() {
           ensureInstance();
 
-          // tinymce replaces '\r\n' to '\n', so we have to do the same on model value
-          // instance.getDoc() check is a guard against null value when destruction &
-          // recreation of instances happen
+          var viewValue = ngModel.$viewValue ?
+            $sce.getTrustedHtml(ngModel.$viewValue) : '';
+
+          // instance.getDoc() check is a guard against null value
+          // when destruction & recreation of instances happen
           if (tinyInstance &&
-            tinyInstance.getDoc() &&
-            (tinyInstance.getContent({format: options.format}).trim() !== ngModel.$viewValue.replace(/\r\n/g, '\n') ||
-              !ngModel.$viewValue ||
-              !ngModel.$viewValue.replace(/\r\n/g, '\n'))
+            tinyInstance.getDoc()
           ) {
-            tinyInstance.setContent(ngModel.$viewValue);
+            tinyInstance.setContent(viewValue);
+            tinyInstance.fire('change');
           }
         };
 

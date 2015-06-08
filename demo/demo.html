@@ -10,11 +10,14 @@
   <script type="text/javascript" src="../bower_components/tinymce-dist/tinymce.min.js"></script>
   <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
   <script type="text/javascript" src="../src/tinymce.js"></script>
+  <script type="text/javascript" src="demo.js"></script>
 </head>
-<body ng-app="ui.tinymce">
+<body ng-app="ui.tinymce" ng-controller="DemoCtrl as demo">
   <form method="post">
-    <textarea id="tinymce" ui-tinymce ng-model="tinymce"></textarea>
+    <textarea ui-tinymce="{trusted: true}"
+      ng-model="demo.tinymce"
+      ng-change="demo.updateHtml()"></textarea>
   </form>
-  <div ng-bind-html="tinymce"></div>
+  <div ng-bind-html="demo.tinymceHtml"></div>
 </body>
 </html>
