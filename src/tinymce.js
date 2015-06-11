@@ -94,6 +94,7 @@ angular.module('ui.tinymce', [])
         // re-rendering directive
         $timeout(function() {
           tinymce.init(options);
+          toggleDisable(scope.$eval(attrs.ngDisabled));
         });
 
         ngModel.$formatters.unshift(function(modelValue) {
@@ -116,25 +117,13 @@ angular.module('ui.tinymce', [])
             tinyInstance.getDoc()
           ) {
             tinyInstance.setContent(viewValue);
+            // Triggering change event due to TinyMCE not firing event &
+            // becoming out of sync for change callbacks
             tinyInstance.fire('change');
           }
         };
 
-        attrs.$observe('disabled', function(disabled) {
-          if (disabled) {
-            ensureInstance();
-
-            if (tinyInstance) {
-              tinyInstance.getBody().setAttribute('contenteditable', false);
-            }
-          } else {
-            ensureInstance();
-
-            if (tinyInstance) {
-              tinyInstance.getBody().setAttribute('contenteditable', true);
-            }
-          }
-        });
+        attrs.$observe('disabled', toggleDisable);
 
         // This block is because of TinyMCE not playing well with removal and
         // recreation of instances, requiring instances to have different
@@ -164,6 +153,22 @@ angular.module('ui.tinymce', [])
         function ensureInstance() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
+          }
+        }
+
+        function toggleDisable(disabled) {
+          if (disabled) {
+            ensureInstance();
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', false);
+            }
+          } else {
+            ensureInstance();
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', true);
+            }
           }
         }
       }
