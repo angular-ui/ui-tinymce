@@ -32,6 +32,22 @@ angular.module('ui.tinymce', [])
             }
           };
 
+        function toggleDisable(disabled) {
+          if (disabled) {
+            ensureInstance();
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', false);
+            }
+          } else {
+            ensureInstance();
+
+            if (tinyInstance) {
+              tinyInstance.getBody().setAttribute('contenteditable', true);
+            }
+          }
+        }
+
         // generate an ID
         attrs.$set('id', ID_ATTR + '-' + generatedIds++);
 
@@ -153,22 +169,6 @@ angular.module('ui.tinymce', [])
         function ensureInstance() {
           if (!tinyInstance) {
             tinyInstance = tinymce.get(attrs.id);
-          }
-        }
-
-        function toggleDisable(disabled) {
-          if (disabled) {
-            ensureInstance();
-
-            if (tinyInstance) {
-              tinyInstance.getBody().setAttribute('contenteditable', false);
-            }
-          } else {
-            ensureInstance();
-
-            if (tinyInstance) {
-              tinyInstance.getBody().setAttribute('contenteditable', true);
-            }
           }
         }
       }
