@@ -110,7 +110,7 @@ angular.module('ui.tinymce', [])
         // re-rendering directive
         $timeout(function() {
           tinymce.init(options);
-          toggleDisable(scope.$eval(attrs.ngDisabled));
+          //toggleDisable(scope.$eval(attrs.ngDisabled));
         });
 
         ngModel.$formatters.unshift(function(modelValue) {
@@ -123,6 +123,7 @@ angular.module('ui.tinymce', [])
 
         ngModel.$render = function() {
           ensureInstance();
+          toggleDisable(scope.$eval(attrs.ngDisabled)); // Long's fix for tinyMce disabled state when initialized https://github.com/angular-ui/ui-tinymce/issues/74
 
           var viewValue = ngModel.$viewValue ?
             $sce.getTrustedHtml(ngModel.$viewValue) : '';
