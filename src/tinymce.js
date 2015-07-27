@@ -55,6 +55,12 @@ angular.module('ui.tinymce', [])
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
+        /*https://github.com/angular-ui/ui-tinymce/issues/112*/
+        if (expression.setup) {
+          var configSetup = expression.setup;
+          delete expression.setup;
+        }
+
         options = {
           // Update model when calling setContent
           // (such as from the source editor popup)
@@ -97,6 +103,11 @@ angular.module('ui.tinymce', [])
               expression.setup(ed, {
                 updateView: updateView
               });
+            }
+            
+            /*https://github.com/angular-ui/ui-tinymce/issues/112*/
+            if (configSetup) {
+              configSetup(ed);
             }
           },
           format: 'raw',
