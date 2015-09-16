@@ -74,9 +74,11 @@ angular.module('ui.tinymce', [])
             });
 
             // Update model on change
-            ed.on('change', function(e) {
-              ed.save();
-              updateView(ed);
+            ed.on('change cut paste undo redo', function(e) {
+              $timeout(function() {
+                ed.save();
+                updateView(ed);
+              });
             });
 
             ed.on('blur', function() {
