@@ -79,6 +79,14 @@ angular.module('ui.tinymce', [])
               updateView(ed);
             });
 
+            // Update model on paste
+            ed.on('paste', function(e) {
+              $timeout(function() {
+                updateView(ed);
+                ed.save();
+              });
+            });
+
             ed.on('blur', function() {
               element[0].blur();
             });
