@@ -21,7 +21,7 @@ angular.module('ui.tinymce', [])
         var ngModel = ctrls[0],
           form = ctrls[1] || null;
 
-        var expression, options, tinyInstance,
+        var expression, options = {}, tinyInstance,
           updateView = function(editor) {
             var content = editor.getContent({format: options.format}).trim();
             content = $sce.trustAsHtml(content);
@@ -55,7 +55,7 @@ angular.module('ui.tinymce', [])
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
-        options = {
+        var setupOptions = {
           // Update model when calling setContent
           // (such as from the source editor popup)
           setup: function(ed) {
@@ -74,7 +74,7 @@ angular.module('ui.tinymce', [])
             });
 
             // Update model on change
-            ed.on('change', function(e) {
+            ed.on('change', function() {
               ed.save();
               updateView(ed);
             });
@@ -99,12 +99,12 @@ angular.module('ui.tinymce', [])
               });
             }
           },
-          format: 'raw',
+          format: expression.format || 'raw',
           selector: '#' + attrs.id
         };
         // extend options with initial uiTinymceConfig and
         // options from directive attribute value
-        angular.extend(options, uiTinymceConfig, expression);
+        angular.extend(options, uiTinymceConfig, expression, setupOptions);
         // Wrapped in $timeout due to $tinymce:refresh implementation, requires
         // element to be present in DOM before instantiating editor when
         // re-rendering directive

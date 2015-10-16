@@ -23,7 +23,7 @@ describe('uiTinymce', function () {
    * Asynchronously runs the compilation.
    */
   function compile() {
-    element = $compile('<form><textarea ui-tinymce="{foo: \'bar\', setup: setupFooBar() }" ng-model="foo"></textarea></form>')(scope);
+    element = $compile('<form><textarea ui-tinymce="{foo: \'bar\', setup: setupFooBar }" data-ng-model="foo"></textarea></form>')(scope);
     angular.element(document.getElementsByTagName('body')[0]).append(element);
     scope.$apply();
     $timeout.flush();
@@ -53,10 +53,15 @@ describe('uiTinymce', function () {
       expect(tinymce.init.calls.mostRecent().args[0].tinymce.bar).toBe('baz');
     });
 
-    it('should execute the passed `setup` option', function() {
+    it('should execute the passed `setup` option', function(done) {
       scope.setupFooBar = jasmine.createSpy('setupFooBar');
       compile();
-      expect(scope.setupFooBar).toHaveBeenCalled();
+
+      //TODO: Get rid of timeout
+      setTimeout(function() {
+        expect(scope.setupFooBar).toHaveBeenCalled();
+        done();
+      }, 100);
     });
   });
 
