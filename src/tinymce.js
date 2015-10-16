@@ -99,7 +99,7 @@ angular.module('ui.tinymce', [])
               });
             }
           },
-          format: expression.format || 'raw',
+          format: expression.format || 'html',
           selector: '#' + attrs.id
         };
         // extend options with initial uiTinymceConfig and
