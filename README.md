@@ -38,9 +38,9 @@ bower install
 This will copy the ui-tinymce files into your `components` folder, along with its dependencies. Load the script files in your application:
 
 ```html
-<script type="text/javascript" src="app/bower_components/tinymce/tinymce.js"></script>
+<script type="text/javascript" src="app/bower_components/tinymce-dist/tinymce.js"></script>
 <script type="text/javascript" src="app/bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="app/bower_components/angular-ui-tinymce/tinymce.js"></script>
+<script type="text/javascript" src="app/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
 ```
 
 Add the tinymce module as a dependency to your application module:
@@ -68,6 +68,10 @@ The ui-tinymce directive plays nicely with the ng-model directive such as ng-req
 If you add the ng-model directive to same the element as ui-tinymce then the text in the editor is automatically synchronized with the model value.
 
 _The ui-tinymce directive stores the configuration options as specified in the [TinyMCE documentation](http://www.tinymce.com/wiki.php/Configuration) and expects the model value to be a html string or raw text, depending on whether `raw` is `true` (default value is `false`)._
+
+**Note:** Make sure you using scopes correctly by following [this wiki page](https://github.com/angular/angular.js/wiki/Understanding-Scopes). If you are having issues with your model not updating, make sure you have a '.' in your model.
+
+> This issue with primitives can be easily avoided by following the "best practice" of always have a '.' in your ng-models – watch 3 minutes worth. Misko demonstrates the primitive binding issue with ng-switch.
 
 ## Options
 
@@ -99,4 +103,11 @@ myAppModule.controller('MyController', function($scope) {
 <form method="post">
   <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
 </form>
-```documentation
+```
+
+----
+
+
+# Contributing to the project
+
+We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution guidelines.
