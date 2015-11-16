@@ -21,7 +21,7 @@ angular.module('ui.tinymce', [])
         var ngModel = ctrls[0],
           form = ctrls[1] || null;
 
-        var expression, options = {}, tinyInstance,
+        var expression, options = {}, tinyInstance, tinymceWatchers = [],
           updateView = function(editor) {
             var content = editor.getContent({format: options.format}).trim();
             content = $sce.trustAsHtml(content);
@@ -54,29 +54,46 @@ angular.module('ui.tinymce', [])
         expression = {};
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
+        tinymceWatchers.push(scope.$on('tinymce:init', function (ev, editorInstance) {
+          ev.stopPropagation();
+          ngModel.$render();
+          ngModel.$setPristine();
+          if (form) {
+            form.$setPristine();
+          }
+        }));
+        tinymceWatchers.push(scope.$on('tinymce:ExecCommand', function (ev, editorInstance) {
+          ev.stopPropagation();
+          editorInstance.save();
+          updateView(editorInstance);
+        }));
+        tinymceWatchers.push(scope.$on('tinymce:change', function (ev, editorInstance) {
+          ev.stopPropagation();
+          editorInstance.save();
+          updateView(editorInstance);
+        }));
+        tinymceWatchers.push(scope.$on('tinymce:ObjectResized', function (ev, editorInstance) {
+          ev.stopPropagation();
+          editorInstance.save();
+          updateView(editorInstance);
+        }));
 
         var setupOptions = {
           // Update model when calling setContent
           // (such as from the source editor popup)
           setup: function(ed) {
             ed.on('init', function() {
-              ngModel.$render();
-              ngModel.$setPristine();
-              if (form) {
-                form.$setPristine();
-              }
+              scope.$emit('tinymce:init',ed);
             });
 
             // Update model on button click
             ed.on('ExecCommand', function() {
-              ed.save();
-              updateView(ed);
+              scope.$emit('tinymce:ExecCommand',ed);
             });
 
             // Update model on change
             ed.on('change', function() {
-              ed.save();
-              updateView(ed);
+              scope.$emit('tinymce:change',ed);
             });
 
             ed.on('blur', function() {
@@ -85,12 +102,13 @@ angular.module('ui.tinymce', [])
 
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function() {
-              ed.save();
-              updateView(ed);
+              scope.$emit('tinymce:ObjectResized',ed);
             });
 
             ed.on('remove', function() {
+              element.off();
               element.remove();
+              ed = null;
             });
 
             if (expression.setup) {
@@ -161,6 +179,10 @@ angular.module('ui.tinymce', [])
           ensureInstance();
 
           if (tinyInstance) {
+            options = tinyInstance.settings.setup = null;
+            for(var eachtinymceWatcher in tinymceWatchers) {
+              tinymceWatchers[eachtinymceWatcher]();
+            }
             tinyInstance.remove();
             tinyInstance = null;
           }
