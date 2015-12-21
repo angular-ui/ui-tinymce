@@ -28,7 +28,7 @@ angular.module('ui.tinymce', [])
 
             ngModel.$setViewValue(content);
             if (!$rootScope.$$phase) {
-              scope.$apply();
+              scope.$digest();
             }
           };
 
