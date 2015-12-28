@@ -98,6 +98,7 @@ In addition, it supports these additional optional options
 
 - `format` Format to get content as, i.e. 'raw' for raw HTML, or 'text' for text only. Defaults to 'html'. Documentation [here](http://www.tinymce.com/wiki.php/api4:method.tinymce.Editor.getContent)
 - `trusted` When `true`, all TinyMCE content that is set to `ngModel` will be whitelisted by `$sce`
+- `baseURL` This will set [baseURL property on the EditorManager](https://www.tinymce.com/docs/api/class/tinymce.editormanager/)
 
 This option is only supported when present on the `uiTinymceConfig` global injectable - this injectable needs to be an object.
 
