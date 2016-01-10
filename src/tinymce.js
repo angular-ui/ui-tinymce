@@ -62,6 +62,7 @@ angular.module('ui.tinymce', [])
             ed.on('init', function() {
               ngModel.$render();
               ngModel.$setPristine();
+              ngModel.$setUntouched();
               if (form) {
                 form.$setPristine();
               }
@@ -81,6 +82,8 @@ angular.module('ui.tinymce', [])
 
             ed.on('blur', function() {
               element[0].blur();
+              ngModel.$setTouched();
+              scope.$digest();
             });
 
             // Update model when an object has been resized (table, image)

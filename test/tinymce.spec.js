@@ -35,6 +35,7 @@ describe('uiTinymce', function () {
     compile();
     expect(directiveElement.controller('form').$pristine).toBe(true);
     expect(directiveElement.controller('ngModel').$pristine).toBe(true);
+    expect(directiveElement.controller('ngModel').$touched).toBe(false);
   });
 
   describe('compiling this directive', function() {
@@ -63,6 +64,14 @@ describe('uiTinymce', function () {
         done();
       }, 100);
     });
+  });
+
+  it("should set touched on blur", function(){
+    compile();
+    expect(directiveElement.controller('ngModel').$touched).toBe(false);
+
+    element.find("textarea").triggerHandler("blur");
+    expect(directiveElement.controller('ngModel').$touched).toBe(true);
   });
 
   it('should remove tinymce instance on $scope destruction', function() {
