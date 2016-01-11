@@ -69,14 +69,12 @@ angular.module('ui.tinymce', [])
               }
             });
 
-            // Update model on button click
-            ed.on('ExecCommand', function() {
-              ed.save();
-              updateView(ed);
-            });
-
-            // Update model on change
-            ed.on('change NodeChange', function() {
+            // Update model when:
+            // - a button has been clicked [ExecCommand]
+            // - the editor content has been modified [change]
+            // - the node has changed [NodeChange]
+            // - an object has been resized (table, image) [ObjectResized]
+            ed.on('ExecCommand change NodeChange ObjectResized', function() {
               ed.save();
               updateView(ed);
             });
@@ -85,12 +83,6 @@ angular.module('ui.tinymce', [])
               element[0].blur();
               ngModel.$setTouched();
               scope.$digest();
-            });
-
-            // Update model when an object has been resized (table, image)
-            ed.on('ObjectResized', function() {
-              ed.save();
-              updateView(ed);
             });
 
             ed.on('remove', function() {
@@ -114,7 +106,7 @@ angular.module('ui.tinymce', [])
         // re-rendering directive
         $timeout(function() {
           if (options.baseURL){
-            tinymce.baseURL = options.baseURL;            
+            tinymce.baseURL = options.baseURL;
           }
           tinymce.init(options);
           toggleDisable(scope.$eval(attrs.ngDisabled));
