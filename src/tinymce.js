@@ -61,16 +61,16 @@ angular.module('ui.tinymce', [])
         // the entire process doesn't have to happen for every
         // action (i.e. key press, mouse event, etc).
         var doSaveUpdate = (function(doSaveUpdateDelay) {
-            var doSaveUpdateTimer;
-            return function(ed) {
-                $timeout.cancel( doSaveUpdateTimer );
-                doSaveUpdateTimer = $timeout( function() {
-                    return (function(ed) {
-                        ed.save();
-                        updateView(ed);
-                    })(ed);
-                }, doSaveUpdateDelay);
-            };
+          var doSaveUpdateTimer;
+          return function(ed) {
+	    $timeout.cancel(doSaveUpdateTimer);
+	    doSaveUpdateTimer = $timeout(function() {
+	      return (function(ed) {
+	        ed.save();
+	        updateView(ed);
+	      })(ed);
+	    }, doSaveUpdateDelay);
+          };
         })(400); // This could be setup to be an option or attribute.
 
         var setupOptions = {
