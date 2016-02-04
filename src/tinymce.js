@@ -56,6 +56,20 @@ angular.module('ui.tinymce', [])
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
+        //Debounce update and save action
+        var debouncedUpdate = (function(debouncedUpdateDelay) {
+          var debouncedUpdateTimer;
+          return function(ed) {
+	        $timeout.cancel(debouncedUpdateTimer);
+	         debouncedUpdateTimer = $timeout(function() {
+              return (function(ed) {
+                ed.save();
+                updateView(ed);
+              })(ed);
+            }, debouncedUpdateDelay);
+          };
+        })(400);
+
         var setupOptions = {
           // Update model when calling setContent
           // (such as from the source editor popup)
@@ -75,8 +89,7 @@ angular.module('ui.tinymce', [])
             // - the node has changed [NodeChange]
             // - an object has been resized (table, image) [ObjectResized]
             ed.on('ExecCommand change NodeChange ObjectResized', function() {
-              ed.save();
-              updateView(ed);
+              debouncedUpdate(ed);
             });
 
             ed.on('blur', function() {
