@@ -55,6 +55,24 @@ angular.module('ui.tinymce', [])
 
         angular.extend(expression, scope.$eval(attrs.uiTinymce));
 
+	// Combines the editor save and view update
+        // into a a single function. Additionally, this
+        // helps debounce the save & update process so that
+        // the entire process doesn't have to happen for every
+        // action (i.e. key press, mouse event, etc).
+        var doSaveUpdate = (function(doSaveUpdateDelay) {
+            var doSaveUpdateTimer;
+            return function(ed) {
+                $timeout.cancel( doSaveUpdateTimer );
+                doSaveUpdateTimer = $timeout( function() {
+                    return (function(ed) {
+                        ed.save();
+                        updateView(ed);
+                    })(ed);
+                }, doSaveUpdateDelay);
+            };
+        })(400); // This could be setup to be an option or attribute.
+
         var setupOptions = {
           // Update model when calling setContent
           // (such as from the source editor popup)
@@ -70,14 +88,12 @@ angular.module('ui.tinymce', [])
 
             // Update model on button click
             ed.on('ExecCommand', function() {
-              ed.save();
-              updateView(ed);
+              doSaveUpdate(ed);
             });
 
             // Update model on change
             ed.on('change NodeChange', function() {
-              ed.save();
-              updateView(ed);
+              doSaveUpdate(ed);
             });
 
             ed.on('blur', function() {
@@ -88,8 +104,7 @@ angular.module('ui.tinymce', [])
 
             // Update model when an object has been resized (table, image)
             ed.on('ObjectResized', function() {
-              ed.save();
-              updateView(ed);
+              doSaveUpdate(ed);
             });
 
             ed.on('remove', function() {
