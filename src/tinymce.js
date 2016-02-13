@@ -13,6 +13,7 @@ angular.module('ui.tinymce', [])
 
     return {
       require: ['ngModel', '^?form'],
+      priority: 999,
       link: function(scope, element, attrs, ctrls) {
         if (!$window.tinymce) {
           return;
