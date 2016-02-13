@@ -81,6 +81,14 @@ angular.module('ui.tinymce', [])
               updateView(ed);
             });
 
+          // Update model on Set content
+          ed.on('SetContent', function(evt) {
+            if (evt.content) {
+              ed.save();
+              updateView(ed);
+            }
+          });
+
             ed.on('blur', function() {
               element[0].blur();
               ngModel.$setTouched();
@@ -114,7 +122,7 @@ angular.module('ui.tinymce', [])
         // re-rendering directive
         $timeout(function() {
           if (options.baseURL){
-            tinymce.baseURL = options.baseURL;            
+            tinymce.baseURL = options.baseURL;
           }
           tinymce.init(options);
           toggleDisable(scope.$eval(attrs.ngDisabled));
