@@ -76,7 +76,8 @@ angular.module('ui.tinymce', [])
             // - the content has been reset [SetContent]
             // an object has been resized (table, image) [ObjectResized]
             ed.on('ExecCommand change NodeChange SetContent ObjectResized', function(evt) {
-              if (evt.name !== 'SetContent' || evt.content ) {
+              // update on 'setcontent' only if evt.content is not null
+              if (evt.type !== 'setcontent' || evt.content ) {
                 ed.save();
                 updateView(ed);
               }
