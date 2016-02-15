@@ -69,36 +69,23 @@ angular.module('ui.tinymce', [])
               }
             });
 
-            // Update model on button click
-            ed.on('ExecCommand', function() {
-              ed.save();
-              updateView(ed);
+            // Update model when:
+            // - a button has been clicked [ExecCommand]
+            // - the editor content has been modified [change]
+            // - the node has changed [NodeChange]
+            // - the content has been reset [SetContent]
+            // an object has been resized (table, image) [ObjectResized]
+            ed.on('ExecCommand change NodeChange SetContent ObjectResized', function(evt) {
+              if (evt.name !== 'SetContent' || evt.content ) {
+                ed.save();
+                updateView(ed);
+              }
             });
-
-            // Update model on change
-            ed.on('change NodeChange', function() {
-              ed.save();
-              updateView(ed);
-            });
-
-          // Update model on Set content
-          ed.on('SetContent', function(evt) {
-            if (evt.content) {
-              ed.save();
-              updateView(ed);
-            }
-          });
 
             ed.on('blur', function() {
               element[0].blur();
               ngModel.$setTouched();
               scope.$digest();
-            });
-
-            // Update model when an object has been resized (table, image)
-            ed.on('ObjectResized', function() {
-              ed.save();
-              updateView(ed);
             });
 
             ed.on('remove', function() {
