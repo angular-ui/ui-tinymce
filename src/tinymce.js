@@ -24,7 +24,7 @@ angular.module('ui.tinymce', [])
 
         var expression, options = {}, tinyInstance,
           updateView = function(editor) {
-            var content = editor.getContent({format: options.format}).trim();
+            var content = editor.getContent({format: options.format, no_events: true}).trim();
             content = $sce.trustAsHtml(content);
 
             ngModel.$setViewValue(content);
@@ -62,10 +62,7 @@ angular.module('ui.tinymce', [])
           return function(ed) {
 	        $timeout.cancel(debouncedUpdateTimer);
 	         debouncedUpdateTimer = $timeout(function() {
-              return (function(ed) {
-                ed.save();
                 updateView(ed);
-              })(ed);
             }, debouncedUpdateDelay);
           };
         })(400);
@@ -85,10 +82,10 @@ angular.module('ui.tinymce', [])
 
             // Update model when:
             // - a button has been clicked [ExecCommand]
-            // - the editor content has been modified [change]
+            // - the editor content has been modified [KeyUp]
             // - the node has changed [NodeChange]
             // - an object has been resized (table, image) [ObjectResized]
-            ed.on('ExecCommand change NodeChange ObjectResized', function() {
+            ed.on('ExecCommand KeyUp NodeChange ObjectResized', function(e) {
               debouncedUpdate(ed);
             });
 

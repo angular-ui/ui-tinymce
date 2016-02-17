@@ -73,6 +73,30 @@ describe('uiTinymce', function () {
     element.find("textarea").triggerHandler("blur");
     expect(directiveElement.controller('ngModel').$touched).toBe(true);
   });
+  
+  it('should not trigger event on KeyUp', function() {
+    compile();
+
+    var editor = tinymce.editors[1];
+    spyOn(editor, 'getContent').and.callThrough();
+    editor.fire('KeyUp');
+    $timeout.flush();
+    
+    expect(editor.getContent.calls.count()).toEqual(1);
+    expect(editor.getContent.calls.argsFor(0)[0].no_events).toBe(true);
+  });
+  
+  it('should not trigger event on ExecCommand', function() {
+    compile();
+
+    var editor = tinymce.editors[1];
+    spyOn(editor, 'getContent').and.callThrough();
+    editor.fire('ExecCommand');
+    $timeout.flush();
+    
+    expect(editor.getContent.calls.count()).toEqual(1);
+    expect(editor.getContent.calls.argsFor(0)[0].no_events).toBe(true);
+  });
 
   it('should remove tinymce instance on $scope destruction', function() {
     compile();
