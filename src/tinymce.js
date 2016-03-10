@@ -63,8 +63,10 @@ angular.module('ui.tinymce', [])
 	        $timeout.cancel(debouncedUpdateTimer);
 	         debouncedUpdateTimer = $timeout(function() {
               return (function(ed) {
-                ed.save();
-                updateView(ed);
+                if (!ed.isNotDirty) {
+                  ed.save();
+                  updateView(ed);
+                }
               })(ed);
             }, debouncedUpdateDelay);
           };
