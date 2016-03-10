@@ -101,6 +101,17 @@ describe('uiTinymce', function () {
         done();
       }, 100);
     });
+    it('shouldn\'t make the form dirty', function(done) {
+      compile();
+      setTimeout(function() {
+        scope.foo = text;
+        scope.$apply();
+
+        expect(directiveElement.controller('form').$dirty).toBe(false);
+
+        done();
+      });
+    });
     // TODO: Fix test
     xit('should handle undefined gracefully', function(done) {
       compile();
