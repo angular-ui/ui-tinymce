@@ -148,4 +148,9 @@ describe('uiTinymce', function () {
     });
   });*/
 
+  it('should work with the ng-if directive', function () {
+    expect(function () {
+      $compile('<textarea ng-if="show" ui-tinymce data-ng-model="foo"></textarea>')(scope);
+    }).not.toThrow();
+  });
 });
