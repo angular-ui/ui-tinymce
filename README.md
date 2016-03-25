@@ -5,7 +5,7 @@
 
 # Requirements
 
-- AngularJS
+- AngularJS 1.4.x or higher and it has been tested with Angular 1.4.8.
 - TinyMCE 4
 
 # Testing
