@@ -94,6 +94,14 @@ angular.module('ui.tinymce', [])
               debouncedUpdate(ed);
             });
 
+          // Update model on Set content
+          ed.on('SetContent', function(evt) {
+            if (evt.content) {
+              ed.save();
+              updateView(ed);
+            }
+          });
+
             ed.on('blur', function() {
               element[0].blur();
               ngModel.$setTouched();
