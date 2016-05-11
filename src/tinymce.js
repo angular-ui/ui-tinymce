@@ -104,6 +104,12 @@ angular.module('ui.tinymce', [])
               element.remove();
             });
 
+            if (uiTinymceConfig.setup) {
+              uiTinymceConfig.setup(ed, {
+                updateView: updateView
+              });
+            }
+
             if (expression.setup) {
               expression.setup(ed, {
                 updateView: updateView
