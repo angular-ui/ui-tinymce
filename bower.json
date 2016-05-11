@@ -20,6 +20,6 @@
     "tinymce-dist": "~4.3.0"
   },
   "devDependencies": {
-    "angular-mocks": "~1.x"
+    "angular-mocks": "~1.4.x"
   }
 }
