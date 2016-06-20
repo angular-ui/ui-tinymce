@@ -14,7 +14,7 @@
 </head>
 <body ng-app="ui.tinymce" ng-controller="DemoCtrl as demo">
   <form method="post">
-    <textarea ui-tinymce="{trusted: true}"
+    <textarea ui-tinymce
       ng-model="demo.tinymce"
       ng-change="demo.updateHtml()"></textarea>
   </form>
