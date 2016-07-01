@@ -125,6 +125,19 @@ myAppModule.controller('MyController', function($scope) {
 </form>
 ```
 
+## Testing your Application (Protractor)
+
+If you are testing your application using Protractor and you wish to be able to automate the
+contribution of rich text content as part of the tests, use the TinyMCE API method `insertContent`
+in conjunction with the WebDriver's `executeScript` method, like this:
+
+```javascript
+browser.driver.executeScript("tinyMCE.activeEditor.insertContent('This is <em>RICH</em> content')");
+```
+
+Note that if you use the TinyMCE API method `setContent`, this will fail to update the Angular model
+with the entered content, so use `insertContent` instead.
+
 ----
 
 
