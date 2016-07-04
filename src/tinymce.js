@@ -87,19 +87,21 @@ angular.module('ui.tinymce', [])
               }
             });
 
-            // Update model when:
-            // - a button has been clicked [ExecCommand]
-            // - the editor content has been modified [change]
-            // - the node has changed [NodeChange]
-            // - an object has been resized (table, image) [ObjectResized]
-            ed.on('ExecCommand change NodeChange ObjectResized', function() {
-              if (!options.debounce) {
-                ed.save();
-                updateView(ed);
-              	return;
-              }
-              debouncedUpdate(ed);
-            });
+            if (!options.updateOnBlurOnly) {
+                // Update model when:
+                // - a button has been clicked [ExecCommand]
+                // - the editor content has been modified [change]
+                // - the node has changed [NodeChange]
+                // - an object has been resized (table, image) [ObjectResized]
+                ed.on('ExecCommand change NodeChange ObjectResized', function() {
+                  if (!options.debounce) {
+                    ed.save();
+                    updateView(ed);
+                  	return;
+                  }
+                  debouncedUpdate(ed);
+                });
+            }
 
             ed.on('blur', function() {
               element[0].blur();
