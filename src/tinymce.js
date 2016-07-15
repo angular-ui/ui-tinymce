@@ -138,8 +138,12 @@ angular.module('ui.tinymce', [])
           if (options.baseURL){
             tinymce.baseURL = options.baseURL;
           }
-          tinymce.init(options);
-          toggleDisable(scope.$eval(attrs.ngDisabled));
+		  var maybeInitPromise = tinymce.init(options); // newer versions of tinymce return a promise
+          if(maybeInitPromise && typeof maybeInitPromise.then === 'function'){
+		    maybeInitPromise.then(function() {
+              toggleDisable(scope.$eval(attrs.ngDisabled));
+		    });
+		  }
         });
 
         ngModel.$formatters.unshift(function(modelValue) {
