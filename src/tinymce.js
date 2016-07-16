@@ -139,10 +139,13 @@ angular.module('ui.tinymce', [])
             tinymce.baseURL = options.baseURL;
           }
 		  var maybeInitPromise = tinymce.init(options); // newer versions of tinymce return a promise
-          if(maybeInitPromise && typeof maybeInitPromise.then === 'function'){
+          if(maybeInitPromise && typeof maybeInitPromise.then === 'function') {
 		    maybeInitPromise.then(function() {
               toggleDisable(scope.$eval(attrs.ngDisabled));
 		    });
+		  }
+		  else {
+		    toggleDisable(scope.$eval(attrs.ngDisabled));
 		  }
         });
 
