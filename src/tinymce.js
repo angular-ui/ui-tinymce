@@ -5,7 +5,6 @@ angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
   .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', '$sce', 'uiTinymceConfig', function($rootScope, $compile, $timeout, $window, $sce, uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};
-    var generatedIds = 0;
     var ID_ATTR = 'ui-tinymce';
     if (uiTinymceConfig.baseUrl) {
       tinymce.baseURL = uiTinymceConfig.baseUrl;
@@ -52,7 +51,7 @@ angular.module('ui.tinymce', [])
         }
 
         // generate an ID
-        attrs.$set('id', ID_ATTR + '-' + generatedIds++);
+        attrs.$set('id', ID_ATTR + '-' + (new Date().valueOf()));
 
         expression = {};
 
