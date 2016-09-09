@@ -35,17 +35,28 @@ angular.module('ui.tinymce', [])
             }
           };
 
+        function ensureInstance() {
+          if (!tinyInstance) {
+            tinyInstance = tinymce.get(attrs.id);
+          }
+        }
+
         function toggleDisable(disabled) {
+          ensureInstance();
+
+          if(!tinyInstance || !tinyInstance.getDoc()) {
+            $timeout(function() {
+              toggleDisable(disabled);
+            }, 10);
+
+            return;
+          }
+
           if (disabled) {
-            ensureInstance();
-
-            if (tinyInstance) {
-              tinyInstance.getBody().setAttribute('contenteditable', false);
-            }
-          } else {
-            ensureInstance();
-
-            if (tinyInstance && !tinyInstance.settings.readonly) {
+            tinyInstance.getBody().setAttribute('contenteditable', false);
+          }
+          else {
+            if (!tinyInstance.settings.readonly) {
               tinyInstance.getBody().setAttribute('contenteditable', true);
             }
           }
@@ -62,8 +73,8 @@ angular.module('ui.tinymce', [])
         var debouncedUpdate = (function(debouncedUpdateDelay) {
           var debouncedUpdateTimer;
           return function(ed) {
-	        $timeout.cancel(debouncedUpdateTimer);
-	         debouncedUpdateTimer = $timeout(function() {
+            $timeout.cancel(debouncedUpdateTimer);
+            debouncedUpdateTimer = $timeout(function() {
               return (function(ed) {
                 if (ed.isDirty()) {
                   ed.save();
@@ -96,7 +107,7 @@ angular.module('ui.tinymce', [])
               if (!options.debounce) {
                 ed.save();
                 updateView(ed);
-              	return;
+                return;
               }
               debouncedUpdate(ed);
             });
@@ -194,12 +205,6 @@ angular.module('ui.tinymce', [])
             tinyInstance = null;
           }
         });
-
-        function ensureInstance() {
-          if (!tinyInstance) {
-            tinyInstance = tinymce.get(attrs.id);
-          }
-        }
       }
     };
   }]);
