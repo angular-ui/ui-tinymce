@@ -214,7 +214,7 @@ angular.module('ui.tinymce', [])
      * A service is used to create unique ID's, this prevents duplicate ID's if there are multiple editors on screen.
      */
     function() {
-      var uiTinymceService = function() {
+      var UITinymceService = function() {
    	    var ID_ATTR = 'ui-tinymce';
     	// uniqueId keeps track of the latest assigned ID
     	var uniqueId = 0;
@@ -222,13 +222,13 @@ angular.module('ui.tinymce', [])
     	var getUniqueId = function() {
           uniqueId ++;
           return ID_ATTR + '-' + uniqueId;
-        }
+        };
         // return the function as a public method of the service
         return {
         	getUniqueId: getUniqueId
-        }
-      }
+        };
+      };
       // return a new instance of the service
-      return new uiTinymceService();
+      return new UITinymceService();
     }
   ]);
