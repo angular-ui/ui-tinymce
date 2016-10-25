@@ -113,7 +113,7 @@ describe('uiTinymce', function () {
       });
     });
     // TODO: Fix test
-    xit('should handle undefined gracefully', function(done) {
+    /*xit('should handle undefined gracefully', function(done) {
       compile();
       setTimeout(function() {
         scope.foo = undefined;
@@ -144,7 +144,7 @@ describe('uiTinymce', function () {
 
         done();
       }, 100);
-    });
+    });*/
   });
   /*describe('using the editor', function () {
     it('should update the model', function (done) {

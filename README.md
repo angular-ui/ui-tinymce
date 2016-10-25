@@ -18,7 +18,7 @@ bower install
 grunt
 ```  
 
-The karma task will try to open Chrome as a browser in which to run the tests.  Make sure this is available or change the configuration in `test\test.config.js` 
+The karma task will try to open Chrome as a browser in which to run the tests.  Make sure this is available or change the configuration in `test\test.config.js`
 
 # Usage
 
@@ -39,7 +39,7 @@ bower install
 This will copy the ui-tinymce files into your `components` folder, along with its dependencies. Load the script files in your application:
 
 ```html
-<script type="text/javascript" src="app/bower_components/tinymce-dist/tinymce.js"></script>
+<script type="text/javascript" src="app/bower_components/tinymce/tinymce.js"></script>
 <script type="text/javascript" src="app/bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="app/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
 ```
@@ -124,6 +124,19 @@ myAppModule.controller('MyController', function($scope) {
   <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
 </form>
 ```
+
+## Testing your Application (Protractor)
+
+If you are testing your application using Protractor and you wish to be able to automate the
+contribution of rich text content as part of the tests, use the TinyMCE API method `insertContent`
+in conjunction with the WebDriver's `executeScript` method, like this:
+
+```javascript
+browser.driver.executeScript("tinyMCE.activeEditor.insertContent('This is <em>RICH</em> content')");
+```
+
+Note that if you use the TinyMCE API method `setContent`, this will fail to update the Angular model
+with the entered content, so use `insertContent` instead.
 
 ----
 
