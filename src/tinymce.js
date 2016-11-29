@@ -51,7 +51,7 @@ angular.module('ui.tinymce', [])
         }
 
         // generate an ID
-        attrs.$set('id', ID_ATTR + '-' + (new Date().valueOf()));
+        attrs.$set('id', ID_ATTR + '-' + Math.floor(Math.random((new Date()).valueOf()) * 10000000));
 
         expression = {};
 
