@@ -3,10 +3,9 @@
  */
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {})
-  .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', '$sce', 'uiTinymceConfig', function($rootScope, $compile, $timeout, $window, $sce, uiTinymceConfig) {
+  .directive('uiTinymce', ['$rootScope', '$compile', '$timeout', '$window', '$sce', 'uiTinymceConfig', 'uiTinymceService', function($rootScope, $compile, $timeout, $window, $sce, uiTinymceConfig, uiTinymceService) {
     uiTinymceConfig = uiTinymceConfig || {};
-    var generatedIds = 0;
-    var ID_ATTR = 'ui-tinymce';
+
     if (uiTinymceConfig.baseUrl) {
       tinymce.baseURL = uiTinymceConfig.baseUrl;
     }
@@ -45,14 +44,15 @@ angular.module('ui.tinymce', [])
           } else {
             ensureInstance();
 
-            if (tinyInstance && !tinyInstance.settings.readonly) {
+            if (tinyInstance && !tinyInstance.settings.readonly && tinyInstance.getDoc()) {
               tinyInstance.getBody().setAttribute('contenteditable', true);
             }
           }
         }
 
-        // generate an ID
-        attrs.$set('id', ID_ATTR + '-' + generatedIds++);
+        // fetch a unique ID from the service
+        var uniqueId = uiTinymceService.getUniqueId();
+        attrs.$set('id', uniqueId);
 
         expression = {};
 
@@ -140,8 +140,14 @@ angular.module('ui.tinymce', [])
           if (options.baseURL){
             tinymce.baseURL = options.baseURL;
           }
-          tinymce.init(options);
-          toggleDisable(scope.$eval(attrs.ngDisabled));
+          var maybeInitPromise = tinymce.init(options);
+          if(maybeInitPromise && typeof maybeInitPromise.then === 'function') {
+            maybeInitPromise.then(function() {
+              toggleDisable(scope.$eval(attrs.ngDisabled));
+            });
+          } else {
+            toggleDisable(scope.$eval(attrs.ngDisabled));
+          }
         });
 
         ngModel.$formatters.unshift(function(modelValue) {
@@ -204,4 +210,27 @@ angular.module('ui.tinymce', [])
         }
       }
     };
-  }]);
+  }])
+  .service('uiTinymceService', [
+    /**
+     * A service is used to create unique ID's, this prevents duplicate ID's if there are multiple editors on screen.
+     */
+    function() {
+      var UITinymceService = function() {
+   	    var ID_ATTR = 'ui-tinymce';
+    	// uniqueId keeps track of the latest assigned ID
+    	var uniqueId = 0;
+        // getUniqueId returns a unique ID
+    	var getUniqueId = function() {
+          uniqueId ++;
+          return ID_ATTR + '-' + uniqueId;
+        };
+        // return the function as a public method of the service
+        return {
+        	getUniqueId: getUniqueId
+        };
+      };
+      // return a new instance of the service
+      return new UITinymceService();
+    }
+  ]);
