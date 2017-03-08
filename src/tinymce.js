@@ -21,6 +21,8 @@ angular.module('ui.tinymce', [])
         var ngModel = ctrls[0],
           form = ctrls[1] || null;
 
+        var forceDirty = false;
+
         var expression, options = {
           debounce: true
         }, tinyInstance,
@@ -65,7 +67,7 @@ angular.module('ui.tinymce', [])
 	        $timeout.cancel(debouncedUpdateTimer);
 	         debouncedUpdateTimer = $timeout(function() {
               return (function(ed) {
-                if (ed.isDirty()) {
+                if (ed.isDirty() || forceDirty) {
                   ed.save();
                   updateView(ed);
                 }
@@ -92,7 +94,11 @@ angular.module('ui.tinymce', [])
             // - the editor content has been modified [change]
             // - the node has changed [NodeChange]
             // - an object has been resized (table, image) [ObjectResized]
-            ed.on('ExecCommand change NodeChange ObjectResized', function() {
+            // - undo, redo, cut or paste operations were performed [undo, redo, cut, paste]
+            ed.on('ExecCommand change NodeChange ObjectResized undo redo cut paste', function(e) {
+              if (['undo', 'redo', 'cut', 'paste'].indexOf(e.type) !== -1) {
+                  forceDirty = true;
+              }
               if (!options.debounce) {
                 ed.save();
                 updateView(ed);
