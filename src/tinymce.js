@@ -97,7 +97,7 @@ angular.module('ui.tinymce', [])
             // - undo, redo, cut or paste operations were performed [undo, redo, cut, paste]
             ed.on('ExecCommand change NodeChange ObjectResized undo redo cut paste', function(e) {
               if (['undo', 'redo', 'cut', 'paste'].indexOf(e.type) !== -1) {
-                  forceDirty = true;
+                forceDirty = true;
               }
               if (!options.debounce) {
                 ed.save();
@@ -105,6 +105,10 @@ angular.module('ui.tinymce', [])
               	return;
               }
               debouncedUpdate(ed);
+            });
+
+            ed.on('keyDown', function() { 
+              forceDirty = true; 
             });
 
             ed.on('blur', function() {
