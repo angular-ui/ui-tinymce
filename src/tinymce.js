@@ -93,13 +93,13 @@ angular.module('ui.tinymce', [])
             // - the node has changed [NodeChange]
             // - an object has been resized (table, image) [ObjectResized]
             ed.on('ExecCommand change NodeChange ObjectResized', function () {
-			  if (options.debounce) {
+              if (options.debounce) {
                 debouncedUpdate(ed);
               }
               else if (ed.isDirty()) {
                 ed.save();
                 updateView(ed);
-			  }
+              }
             });
 
             ed.on('blur', function() {
