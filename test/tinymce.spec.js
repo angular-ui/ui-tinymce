@@ -188,7 +188,7 @@ describe('uiTinymce', function () {
       plugins: 'save',
       setup: function (ed) {}
     };
-    spyOn(scope.options, 'setup').and.callThrough()
+    spyOn(scope.options, 'setup').and.callThrough();
     element = $compile('<form><textarea ui-tinymce="options" data-ng-model="foo_1"</textarea></form>')(scope);
     angular.element(document.getElementsByTagName('body')[0]).append(element);
     scope.$apply();
@@ -211,7 +211,7 @@ describe('uiTinymce', function () {
       plugins: '',
       setup: function (ed) {}
     };
-    spyOn(scope.options, 'setup').and.callThrough()
+    spyOn(scope.options, 'setup').and.callThrough();
     element = $compile('<form><textarea ui-tinymce="options" data-ng-model="foo_1"</textarea></form>')(scope);
     angular.element(document.getElementsByTagName('body')[0]).append(element);
     scope.$apply();
@@ -226,5 +226,5 @@ describe('uiTinymce', function () {
     // Then I see that content is automatically saved when content is dirty
     expect(editor.isDirty).toHaveBeenCalled();
     expect(editor.save).toHaveBeenCalled();
-  })
+  });
 });
