@@ -3,6 +3,10 @@
 [![Build Status](https://travis-ci.org/angular-ui/ui-tinymce.png)](https://travis-ci.org/angular-ui/ui-tinymce) 
 [![Join the chat at https://gitter.im/angular-ui/ui-tinymce](https://badges.gitter.im/angular-ui/ui-tinymce.svg)](https://gitter.im/angular-ui/ui-tinymce?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+# Call for Maintainer
+
+This library is looking for a maintainer. If you feel up to the task please open an issue indicating so.
+
 # Requirements
 
 - AngularJS 1.4.x or higher and it has been tested with Angular 1.4.8.
