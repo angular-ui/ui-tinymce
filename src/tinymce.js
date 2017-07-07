@@ -56,8 +56,6 @@ angular.module('ui.tinymce', [])
 
         expression = {};
 
-        angular.extend(expression, scope.$eval(attrs.uiTinymce));
-
         //Debounce update and save action
         var debouncedUpdate = (function(debouncedUpdateDelay) {
           var debouncedUpdateTimer;
@@ -128,13 +126,17 @@ angular.module('ui.tinymce', [])
           format: expression.format || 'html',
           selector: '#' + attrs.id
         };
-        // extend options with initial uiTinymceConfig and
-        // options from directive attribute value
-        angular.extend(options, uiTinymceConfig, expression, setupOptions);
+
         // Wrapped in $timeout due to $tinymce:refresh implementation, requires
         // element to be present in DOM before instantiating editor when
         // re-rendering directive
         $timeout(function() {
+          angular.extend(expression, scope.$eval(attrs.uiTinymce));
+
+          // extend options with initial uiTinymceConfig and
+          // options from directive attribute value
+          angular.extend(options, uiTinymceConfig, expression, setupOptions);
+
           if (options.baseURL){
             tinymce.baseURL = options.baseURL;
           }
