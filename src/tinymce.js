@@ -179,7 +179,7 @@ angular.module('ui.tinymce', [])
         // This block is because of TinyMCE not playing well with removal and
         // recreation of instances, requiring instances to have different
         // selectors in order to render new instances properly
-        scope.$on('$tinymce:refresh', function(e, id) {
+        var unbindEventListener = scope.$on('$tinymce:refresh', function(e, id) {
           var eid = attrs.id;
           if (angular.isUndefined(id) || id === eid) {
             var parentElement = element.parent();
@@ -189,6 +189,7 @@ angular.module('ui.tinymce', [])
             clonedElement.removeAttr('aria-hidden');
             tinymce.execCommand('mceRemoveEditor', false, eid);
             parentElement.append($compile(clonedElement)(scope));
+            unbindEventListener();
           }
         });
 
