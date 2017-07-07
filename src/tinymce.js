@@ -49,7 +49,7 @@ angular.module('ui.tinymce', [])
             }
           }
         }
-
+		
         // fetch a unique ID from the service
         var uniqueId = uiTinymceService.getUniqueId();
         attrs.$set('id', uniqueId);
@@ -92,13 +92,14 @@ angular.module('ui.tinymce', [])
             // - the editor content has been modified [change]
             // - the node has changed [NodeChange]
             // - an object has been resized (table, image) [ObjectResized]
-            ed.on('ExecCommand change NodeChange ObjectResized', function() {
-              if (!options.debounce) {
+            ed.on('ExecCommand change NodeChange ObjectResized', function () {
+              if (options.debounce) {
+                debouncedUpdate(ed);
+              }
+              else if (ed.isDirty()) {
                 ed.save();
                 updateView(ed);
-              	return;
               }
-              debouncedUpdate(ed);
             });
 
             ed.on('blur', function() {
