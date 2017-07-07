@@ -11,15 +11,14 @@ angular.module('ui.tinymce', [])
     }
 
     return {
-      require: ['ngModel', '^?form'],
+      require: ['ngModel'],
       priority: 599,
       link: function(scope, element, attrs, ctrls) {
         if (!$window.tinymce) {
           return;
         }
 
-        var ngModel = ctrls[0],
-          form = ctrls[1] || null;
+        var ngModel = ctrls[0];
 
         var expression, options = {
           debounce: true
@@ -81,10 +80,7 @@ angular.module('ui.tinymce', [])
             ed.on('init', function() {
               ngModel.$render();
               ngModel.$setPristine();
-                ngModel.$setUntouched();
-              if (form) {
-                form.$setPristine();
-              }
+              ngModel.$setUntouched();
             });
 
             // Update model when:
