@@ -181,4 +181,50 @@ describe('uiTinymce', function () {
 	    expect(id2).not.toEqual(id3);
 	    expect(id3).not.toEqual(id4);
   });
+
+  it('does not automatically save the dirty changes when save plugin is present', function () {
+    // Given a tinymce editor is present on a page with a plugin to allow saving externally
+    scope.options = {
+      plugins: 'save',
+      setup: function (ed) {}
+    };
+    spyOn(scope.options, 'setup').and.callThrough();
+    element = $compile('<form><textarea ui-tinymce="options" data-ng-model="foo_1"</textarea></form>')(scope);
+    angular.element(document.getElementsByTagName('body')[0]).append(element);
+    scope.$apply();
+    $timeout.flush();
+
+    // When there is a change event on editor
+    var editor = scope.options.setup.calls.allArgs()[0][0];
+    spyOn(editor, 'isDirty').and.returnValue(true);
+    spyOn(editor, 'save');
+    $timeout.flush(); // This will ensure that debouncedUpdateTimer timer function is executed which was setup on 'change' event
+
+    // Then I see that content is not automatically saved when content is dirty
+    expect(editor.isDirty).toHaveBeenCalled();
+    expect(editor.save).not.toHaveBeenCalled();
+  });
+
+  it('automatically saves the dirty changes when save plugin is not present', function () {
+    // Given a tinymce editor is present on a page without a 'save' plugin
+    scope.options = {
+      plugins: '',
+      setup: function (ed) {}
+    };
+    spyOn(scope.options, 'setup').and.callThrough();
+    element = $compile('<form><textarea ui-tinymce="options" data-ng-model="foo_1"</textarea></form>')(scope);
+    angular.element(document.getElementsByTagName('body')[0]).append(element);
+    scope.$apply();
+    $timeout.flush();
+
+    // When there is a change event on editor
+    var editor = scope.options.setup.calls.allArgs()[0][0];
+    spyOn(editor, 'isDirty').and.returnValue(true);
+    spyOn(editor, 'save');
+    $timeout.flush(); // This will ensure that debouncedUpdateTimer timer function is executed which was setup on 'change' event
+
+    // Then I see that content is automatically saved when content is dirty
+    expect(editor.isDirty).toHaveBeenCalled();
+    expect(editor.save).toHaveBeenCalled();
+  });
 });

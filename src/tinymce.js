@@ -62,11 +62,14 @@ angular.module('ui.tinymce', [])
         var debouncedUpdate = (function(debouncedUpdateDelay) {
           var debouncedUpdateTimer;
           return function(ed) {
+            var tinymcePlugins = tinyInstance.settings.plugins ? tinyInstance.settings.plugins.split(' ') : [];
 	        $timeout.cancel(debouncedUpdateTimer);
 	         debouncedUpdateTimer = $timeout(function() {
               return (function(ed) {
                 if (ed.isDirty()) {
-                  ed.save();
+                  if (tinymcePlugins.indexOf('save') === -1) {
+                    ed.save();
+                  }
                   updateView(ed);
                 }
               })(ed);
