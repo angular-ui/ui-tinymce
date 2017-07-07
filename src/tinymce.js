@@ -168,6 +168,7 @@ angular.module('ui.tinymce', [])
             tinyInstance.getDoc()
           ) {
             tinyInstance.setContent(viewValue);
+            tinyInstance.undoManager.clear();	  
             // Triggering change event due to TinyMCE not firing event &
             // becoming out of sync for change callbacks
             tinyInstance.fire('change');
