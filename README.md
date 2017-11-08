@@ -43,9 +43,9 @@ bower install
 This will copy the ui-tinymce files into your `components` folder, along with its dependencies. Load the script files in your application:
 
 ```html
-<script type="text/javascript" src="app/bower_components/tinymce/tinymce.js"></script>
+<script type="text/javascript" src="app/bower_components/tinymce/angular-ui-tinymce.js"></script>
 <script type="text/javascript" src="app/bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="app/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+<script type="text/javascript" src="app/bower_components/angular-ui-tinymce/src/angular-ui-tinymce.js"></script>
 ```
 
 Add the tinymce module as a dependency to your application module:
