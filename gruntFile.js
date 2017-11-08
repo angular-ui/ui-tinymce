@@ -38,7 +38,7 @@ module.exports = function (grunt) {
     uglify: {
       dist: {
         files: {
-          'dist/tinymce.min.js': ['src/tinymce.js']
+          'dist/angular-ui-tinymce.min.js': ['src/angular-ui-tinymce.js']
         }
       }
     }
