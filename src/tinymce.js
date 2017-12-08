@@ -199,6 +199,7 @@ angular.module('ui.tinymce', [])
           if (tinyInstance) {
             tinyInstance.remove();
             tinyInstance = null;
+			options.setup = null;
           }
         });
 
