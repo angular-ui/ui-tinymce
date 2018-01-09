@@ -100,6 +100,18 @@ angular.module('ui.tinymce', [])
               }
               debouncedUpdate(ed);
             });
+	     // Update model on keypress
+	    ed.on('KeyUp', function (e) {
+	      ed.save();
+	      updateView();
+	    });
+	    // Update model on change, i.e. copy/pasted text, plugins altering content
+	    ed.on('SetContent', function (e) {
+	      if (!e.initial && ngModel.$viewValue !== e.content) {
+		ed.save();
+		updateView();
+	      }
+	    });
 
             ed.on('blur', function() {
               element[0].blur();
