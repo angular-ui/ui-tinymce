@@ -135,6 +135,10 @@ angular.module('ui.tinymce', [])
         // element to be present in DOM before instantiating editor when
         // re-rendering directive
         $timeout(function() {
+          // For dynamically created editors (e.g. with ngRepeat) the id attribute may be overwritten,
+          // if the id is generated with an angular expression, so we have to overwrite it again.
+          attrs.$set('id', uniqueId);
+
           if (options.baseURL){
             tinymce.baseURL = options.baseURL;
           }
