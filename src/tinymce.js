@@ -81,10 +81,7 @@ angular.module('ui.tinymce', [])
             ed.on('init', function() {
               ngModel.$render();
               ngModel.$setPristine();
-                ngModel.$setUntouched();
-              if (form) {
-                form.$setPristine();
-              }
+              ngModel.$setUntouched();
             });
 
             // Update model when:
