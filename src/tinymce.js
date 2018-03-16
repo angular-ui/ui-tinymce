@@ -114,8 +114,8 @@ angular.module('ui.tinymce', [])
             });
 
             ed.on('paste', function() {
-              ed.isNotDirty = false
-            })
+              ed.isNotDirty = false;
+            });
 
             if (uiTinymceConfig.setup) {
               uiTinymceConfig.setup(ed, {
