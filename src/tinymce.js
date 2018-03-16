@@ -113,6 +113,10 @@ angular.module('ui.tinymce', [])
               element.remove();
             });
 
+            ed.on('paste', function() {
+              ed.isNotDirty = false
+            })
+
             if (uiTinymceConfig.setup) {
               uiTinymceConfig.setup(ed, {
                 updateView: updateView
