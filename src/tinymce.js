@@ -107,8 +107,8 @@ angular.module('ui.tinymce', [])
                         // - the node has changed [NodeChange]
                         // - an object has been resized (table, image) [ObjectResized]
                         // - undo, redo, cut or paste operations were performed [undo, redo, cut, paste]
-                        ed.on('ExecCommand change NodeChange ObjectResized undo redo cut paste', function(e) {
-                            if (['undo', 'redo', 'cut', 'paste'].indexOf(e.type) !== -1) {
+                        ed.on('ExecCommand change NodeChange ObjectResized undo redo cut paste keyup', function(e) {
+                            if (['undo', 'redo', 'cut', 'paste', 'keyup'].indexOf(e.type) !== -1) {
                                 forceDirty = true;
                             }
                             if (!options.debounce) {
